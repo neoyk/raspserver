@@ -22,7 +22,7 @@ if($version==4)
 echo "<table><tr><td>Name&nbsp;</td><td>Dom Ac&nbsp;</td><td>Dom Biz&nbsp;</td><td>China Telecom&nbsp;</td><td>China Unicom&nbsp;</td><td>China Mobile&nbsp;</td><td>Int' Ac&nbsp;</td><td>Int' Biz&nbsp;</td><td>overall</td><td>&nbsp;</td></tr>\n";
 else
 echo "<table><tr><td>Name&nbsp;</td><td>Dom Ac&nbsp;</td><td>Dom Biz&nbsp;</td><td>Int' Ac&nbsp;</td><td>Int' Biz&nbsp;</td><td>overall</td><td>&nbsp;</td></tr>\n";
-$sql = "select code from siteinfo where id >2 order by id ";
+$sql = "select code, mac from siteinfo where id >2 order by id ";
 $result = mysql_query($sql, $link);  
 $con = mysqli_connect("localhost","root","","raspresults");
 if (mysqli_connect_errno())
@@ -47,7 +47,7 @@ while($row = mysql_fetch_array($result))
 	echo "<tr><td>$row[0]&nbsp;</td>";
 	foreach($category as $key)
 	{
-		$sql = "select $perf from $perf$version where type = '$key' and code = '$row[0]' order by time desc limit 1";
+		$sql = "select $perf from $perf$version where type = '$key' and mac = '$row[1]' order by time desc limit 1";
 		//echo $sql;
 		$result2 = mysqli_query($con,$sql);
 		if( mysqli_num_rows($result2))
@@ -73,11 +73,11 @@ while($row = mysql_fetch_array($result))
 			        $max = round($max/$scale,1);
 			}
 			$urlkey = urlencode($key);
-			echo "<td><a href=plot/overall.php?code=".$row[0]."&type=$urlkey&version=$version&$perf=1>$max$u</a>&nbsp;</td>\n";
+			echo "<td><a href=plot/overall.php?code=$row[0]&mac=".$row[1]."&type=$urlkey&version=$version&$perf=1>$max$u</a>&nbsp;</td>\n";
 		}else
 			echo "<td></td>";
 	}
-	echo "<td>&nbsp;<a href=plot/all.php?code=".$row[0]."&version=$version&$perf=1&xaxis=Two_days&ok=plot>Plot_all</td>\n";
+	echo "<td>&nbsp;<a href=plot/all.php?code=$row[0]&mac=".$row[1]."&version=$version&$perf=1&xaxis=Two_days&ok=plot>Plot_all</td>\n";
 	echo "</tr>\n";
 }
 mysqli_close($con);

@@ -12,6 +12,10 @@ $(document).ready(function(){
   });
 });
 </script>
+<style>
+	table, th, td {border: 0px solid black; border-collapse: collapse;}
+	th,td { padding: 5px}
+</style>
 <title>Web Performance Plot</title>
 </head>
 
@@ -19,9 +23,10 @@ $(document).ready(function(){
 
 <?php
 require('paraparser.php');
-$category = array('Domestic Academic','Domestic Business','CT','CU','CM','International Academic','International Business','overall');
-$v6skip=array('CT','CU','CM','Domestic Business');
-echo "<h3>Plot all: IPv$version, $code"; 
+$category = array('Domestic Academic','Domestic Business','CERNET','CT','CU','CM','International Academic','International Business','overall');
+$v6skip=array('CERNET','CT','CU','CM','Domestic Business');
+$v4skip=array('Domestic Academic','Domestic Business','overall');
+echo "<h3>Plot all: IPv$version, $code, $mac"; 
 foreach($para as $entry)
 	echo ", $entry";
 echo " </h3>\n";
@@ -31,12 +36,15 @@ if(!empty($ok))
 		echo "<font color=red>Wrong Data! Please check your input!</font> <br />";
 	else
 	{	
+		echo "<pre>";
 		foreach($category as $type)
 		{	
 			if($version==6 and in_array($type,$v6skip)) continue;
+			if($version==4 and in_array($type,$v4skip)) continue;
 			$type = urlencode($type);
 			require('plot.php');
 		}
+		echo "</pre>\n";
 	}
 }
 echo "<br><br><button>Click to replot results.</button>\n";

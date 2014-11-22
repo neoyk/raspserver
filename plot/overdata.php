@@ -3,6 +3,7 @@ $p_x = array();
 $p_y = array();
 $inx=$_GET['xaxis'];
 $type=$_GET['type'];
+$mac = $_GET['mac'];
 $code = $_GET['code'];
 $t1=$_GET['time1'];
 $t2=$_GET['time2'];
@@ -19,13 +20,13 @@ else
 $link = mysql_connect("127.0.0.1", "root", "") or die('Connecting Failure!'); 
 $db = mysql_select_db('raspresults'); 
 
-$result0 = mysql_query("select max(time) from $table where code='$code' and type='$type'", $link);
+$result0 = mysql_query("select max(time) from $table where mac='$mac' and type='$type'", $link);
 //$cmd = "select max(time) from $table where ";
 #file_put_contents('/var/www/html/raspberry/plot/debug',$cmd);
 $row0 = mysql_fetch_array($result0);
 $date = $row0[0];
-echo "<h3>Raw data:$code, $type, $entry, IPv$version</h3>\n";
-$cmd = "select $entry,time from $table where code='$code' and type='$type'";
+echo "<h3>Raw data:$code, $mac, $type, $entry, IPv$version</h3>\n";
+$cmd = "select $entry,time from $table where mac='$mac' and type='$type'";
 if($inx=="Two_days")
 	$cmd .= "and time>= now()- interval 48 hour ";
 else if($inx=="Month")

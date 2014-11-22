@@ -20,7 +20,7 @@ $(document).ready(function(){
 
 <?php
 require('paraparser.php');
-echo "<h2>Plot raw data: $code, IPv$version, $where</h2>\n";
+echo "<h2>Plot raw data: $code, $mac, IPv$version, $where</h2>\n";
 if(!empty($ok))
 {
 	if($in=="--OR--" and $correct==0)

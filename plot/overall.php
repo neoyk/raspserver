@@ -21,11 +21,11 @@ $(document).ready(function(){
 	
 	require('paraparser.php');
 	
-	echo "<h3>$code, $in3, IPv$version ";
+	echo "<h3>$code, $mac, $in3, IPv$version ";
 	foreach($para as $entry)echo ", $entry";
 	$map = array('avgbw'=>'bandwidth','avgrtt'=>'latency','avgloss'=>'lossrate');
 $where = urlencode("type='$in3'");
-echo "&nbsp;&nbsp;<a href=\"full.php?version=$version&code=$code&ok=Plot&where=$where";
+echo "&nbsp;&nbsp;<a href=\"full.php?version=$version&mac=$mac&code=$code&xaxis=Two_days&ok=Plot&where=$where";
 foreach($para as $entry)
 { $name = $map[$entry];echo "&$name=1";}
 echo "\">Individual websites in $in3</a>\n";

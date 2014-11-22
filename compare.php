@@ -12,11 +12,12 @@ if(!in_array($perf, $perflist))
 $version = $_REQUEST['version'];
 if(!in_array($version, array(4,6)))
 	$version = 4;
-echo "<frameset cols=\"50%,50%\">\n";
+require( "perf.php?perf=$perf&version=$version");
+/*echo "<frameset cols=\"50%,50%\">\n";
 echo "<frame src=\"perf.php?perf=$perf&version=$version\">\n";
 if($perf=='avgbw')
 echo "<frame src=\"perf.php?perf=avgrtt&version=$version\">\n";
 else
 echo "<frame src=\"perf.php?perf=avgbw&version=$version\">\n";
-?>
+ */?>
 </html>

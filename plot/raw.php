@@ -34,8 +34,8 @@ if($row0[0]==0)
 }else
 	$id=$id0;
 
-echo "<h2>Plot raw data: $code, IPv$version, $in3<h2>\n";
-$result2 = mysql_query("select webdomain, upper(asn),ip from $code$version where id=$id order by time desc limit 1", $link);
+echo "<h2>Plot raw data: $code, $mac, IPv$version, $in3<h2>\n";
+$result2 = mysql_query("select webdomain, upper(asn),ip from perf_{$mac}_v$version where id=$id order by time desc limit 1", $link);
 $row2 = mysql_fetch_array($result2);
 $domain = $row2[0];
 $asn = $row2[1];

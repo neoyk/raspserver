@@ -2,17 +2,32 @@
 $callpage = basename($_SERVER['SCRIPT_FILENAME']);
 error_reporting(E_WARNING);
 
-if($_GET['code'])
-	$code = $_GET['code'];
+if($_GET['mac'])
+	$mac = $_GET['mac'];
 else
-	$code = 'thu';
+	$mac = '000000000000';
 if($_GET['perf'])
 	$perf = $_GET['perf'];
 else
 	$perf = 'avgbw';
-$link = mysql_connect("127.0.0.1", "root", "") or die('Connecting Failure!');
-$db = mysql_select_db('raspberry');
-mysql_query("flush tables", $link);
+$con = mysqli_connect("localhost","root","","raspresults");
+if (mysqli_connect_errno())
+{
+	  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+	  exit(1);
+}
+$sql = "select code from raspberry.siteinfo where mac='$mac'";
+$result2 = mysqli_query($con,$sql);
+if( mysqli_num_rows($result2))
+{
+    $value = mysqli_fetch_row($result2);
+    $code = $value[0];
+	mysqli_free_result($result2);
+}
+elseif($_GET['code'])
+	$code = $_GET['code'];
+else
+	$code = 'No name';
 
 $para = array();
 if($_GET['bandwidth'])

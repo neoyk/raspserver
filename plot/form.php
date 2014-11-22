@@ -4,17 +4,17 @@ $callpage = basename($_SERVER['SCRIPT_FILENAME']);
 echo "<form name = plot action = $callpage method = get>\n";
 $category = array('Domestic Academic','Domestic Business','CT','CU','CM','International Academic','International Business','overall');
 echo "<p><b>Choose site :</b> ";
-echo "<select name=code>";
-$result3 = mysql_query("select code from raspberry.siteinfo where id>2", $link);
-while($row3 = mysql_fetch_array($result3))
+echo "<select name=mac>";
+$result3 = mysqli_query($con, "select mac from raspberry.siteinfo where id>2");
+while($row3 = mysqli_fetch_row($result3))
 {   
-	if($code==$row3[0])
+	if($mac==$row3[0])
 		echo "<option selected=selected>$row3[0]</option>";
 	else	
 		echo "<option>$row3[0]</option>";
 }   
 echo "</select></p>";
-	
+mysqli_close($con);
 echo "<p><b>Choose IP version :</b> ";
 echo "<input type=radio name=version value=4 ";
 if($version==4) echo "checked";
@@ -96,7 +96,7 @@ if($in=="--OR--")
 else 
 	echo " --OR-- Choose Start and End Dates: from <input name = time1 type = text size=8 width = 10> to <input name = time2 type = text size=8 width = 10>";
  " (eg:20110528 to ".date('Ymd').")</p>\n";
-
+/*
 echo "<p><b>Plot Y Range : </b>\n";
 if($in2=="Auto")
 	echo "<select name=yaxis><option selected=selected>Auto</option><option>--OR--</option></select>\n";
@@ -107,6 +107,7 @@ if($in2=="--OR--")
 	echo "value=$in4 /> to <input name = max type = text size=8 width = 10 value=$in5 /></p>\n";
 else if($in2=="Auto")
 	echo "/> to <input name = max type = text size=8 width = 10 /></p>\n";
+ */
 if(!in_array($callpage,array('full.php','all.php')))
 {
 	echo "<p><b>Zoom Figure (0.5~3) :</b> Width *  ";
