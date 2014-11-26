@@ -108,7 +108,7 @@ else
 $desc = $_REQUEST['desc'];  //boolean
 echo "<a href=index.php?version=$version&order=name&desc=";
 echo ($order=='name' and $desc=='desc')?"asc":"desc";
-echo ">Name</a>".str_repeat(' ',9);
+echo ">Name</a>".str_repeat(' ',12);
 echo sprintf("%-13s", 'MAC address');
 if($version == 4 )
 	echo sprintf("%-16s", 'IP address');
@@ -152,11 +152,11 @@ while($row0 = mysqli_fetch_assoc($result0))
 	$code = $row0["code"];
 	if(strlen($code)<5)
 	{	
-		$code = sprintf("%-12s", 'input name');
+		$code = sprintf("%-15s", 'input name');
 		echo "<a href=reg.php?mac=$mac>$code</a> ";
 	}else
 	{
-		$code = sprintf("%-12s", $code);
+		$code = sprintf("%-15s", $code);
 		echo "$code ";
 	}
 	$sql = "select ipv$version from perf_{$mac}_address order by time desc limit 1";
@@ -205,6 +205,7 @@ Details: <a href=perf.php?version=<?php echo $version;?>>bandwidth</a>&nbsp;
 <a href=perf.php?perf=avgloss&version=<?php echo $version;?>>lossrate</a>&nbsp;
 --!>
 <a href=websites.php>Website list</a>&nbsp;
-<br><a href=raspberry.zip>Image Download</a>&nbsp; Md5sum: 4c3dd9979e2c6ad02591273f6ca236dd
+<br><a href=raspbian.tar.gz>Image Download</a>&nbsp; <a href=rasp_manual.pdf>Manual</a>
+<br>Md5sum:<br>fc720b3360abf7015e040dcd9677c970 raspbian.img<br>d6a82cef1edd6d8a478e82b19f613894 raspbian.tar.gz
 </body>
 </html>

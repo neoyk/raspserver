@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv = "Content-Type" content = "text-html; charset = utf-8" />
-<META HTTP-EQUIV="REFRESH" CONTENT="3600">
+<META HTTP-EQUIV="REFRESH" CONTENT="1800">
 <title>Plot results</title>
 <link rel="icon" type="image/png" href="../Raspberry.png">
 <style>
@@ -100,7 +100,7 @@ while($row0 = mysqli_fetch_assoc($result0))
 	if(strlen($code)<5)
 	{	
 		$code = 'input name';
-		echo "<tr><td><a href=../reg.php?mac=$mac>$code</a></td>";
+		echo "<tr><td><a href=../reg.php?mac=$mac>$code</a></td><td>$mac </td>";
 	}else
 		echo "<tr><td>$code </td><td>$mac </td>\n";
 	foreach($category as $gen)

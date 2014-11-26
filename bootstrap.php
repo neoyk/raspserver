@@ -37,6 +37,9 @@ foreach(array(4,6) as $version)
 		echo $create."\n";
 	}
 }
+echo "CREATE TABLE if not exists `address` (`id` int(11) NOT NULL AUTO_INCREMENT, `mac` char(20) NOT NULL, `ipv4` varchar(200) NOT NULL, `asn4` varchar(200) NOT NULL, `ipv6` varchar(400) NOT NULL, `asn6` varchar(200) NOT NULL, `time` datetime DEFAULT NULL, PRIMARY KEY (`id`))\n";
+echo "CREATE TABLE if not exists `web_perf4` (`mac` varchar(20) NOT NULL, `id` int(11) NOT NULL, `ip` varchar(16) NOT NULL, `asn` varchar(20) DEFAULT NULL, `webdomain` varchar(500) NOT NULL, `time` datetime NOT NULL, `bandwidth` double NOT NULL, `pagesize` double NOT NULL, `latency` float NOT NULL, `lossrate` float DEFAULT NULL, `actual_loss` float DEFAULT NULL, `maxbw` double DEFAULT NULL, `type` varchar(50) DEFAULT NULL, UNIQUE KEY `search` (`id`,`time`,`mac`)) ENGINE=MyISAM DEFAULT CHARSET=utf8\n";
+echo "CREATE TABLE if not exists `web_perf6` (`mac` varchar(20) NOT NULL, `id` int(11) NOT NULL, `ip` varchar(40) NOT NULL, `asn` varchar(20) DEFAULT NULL, `webdomain` varchar(500) NOT NULL, `time` datetime NOT NULL, `bandwidth` double NOT NULL, `pagesize` double NOT NULL, `latency` float NOT NULL, `lossrate` float DEFAULT NULL, `actual_loss` float DEFAULT NULL, `maxbw` double DEFAULT NULL, `type` varchar(50) DEFAULT NULL, UNIQUE KEY `search` (`id`,`time`,`mac`)) ENGINE=MyISAM DEFAULT CHARSET=utf8\n";
 /*
 echo "delete from web_perf4 where time<'2014-10-30'\n";
 echo "delete from web_perf6 where time<'2014-10-30'\n";
@@ -56,7 +59,8 @@ echo "reset slave\n";
 echo "change master to MASTER_HOST='perf.sasm3.net',master_user='repl',master_password='perf@CERNET2014',master_log_file='".$row[0]."',master_log_pos=".$row[1]."\n";
 echo "start slave\n";
 		 */
-foreach(array('perf.sh', 'webcrawl.py', 'ipdetection.py', 'ipv4mnt.py', 'ipv6mnt.py', 'upload.py' ) as $filename)
+//foreach(array('perf.sh', 'webcrawl.py', 'ipdetection.py', 'ipv4mnt.py', 'ipv6mnt.py', 'upload.py' ) as $filename)
+foreach(array('webcrawl.py' ) as $filename)
 {
 	echo "system wget http://perf.sasm3.net/raspberry/code/$filename -O /root/mnt/$filename\n";
 }
