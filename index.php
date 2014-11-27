@@ -31,14 +31,22 @@ function normalize($max)
 	}
 	return (string)$max.$u;
 }
-$version = $_REQUEST['version'];//4 or 6
+$version = intval($_REQUEST['version']);//4 or 6
 if(!in_array($version, array(4,6)))
 	$version = 4;
-echo "<p>Raspberry list - IPv$version ";
-if($version==4)
-	echo "<a href=index.php?version=6>IPv6</a>";
+$alive = intval($_REQUEST['alive']);//4 or 6
+if($alive!=0)
+	$alive = 1;
+echo "<p>Raspberry list - ";
+if($alive)
+	echo " alive only, clike to show <a href=index.php?version=$version&alive=0>all</a>";
 else
-	echo "<a href=index.php?version=4>IPv4</a>";
+	echo " all probes, clike to show <a href=index.php?version=$version&alive=1>alive ones</a>";
+echo " - IPv$version ";
+if($version==4)
+	echo "<a href=index.php?version=6&alive=$alive>IPv6</a>";
+else
+	echo "<a href=index.php?version=4&alive=$alive>IPv4</a>";
 echo " mean/stdv </p>\n";
 echo "<pre>\n";
 $category = array('bw','rtt','loss');
@@ -106,7 +114,7 @@ if (isset($_REQUEST['order']))
 else
 	$sort = 0;
 $desc = $_REQUEST['desc'];  //boolean
-echo "<a href=index.php?version=$version&order=name&desc=";
+echo "<a href=index.php?version=$version&alive=$alive&order=name&desc=";
 echo ($order=='name' and $desc=='desc')?"asc":"desc";
 echo ">Name</a>".str_repeat(' ',12);
 echo sprintf("%-13s", 'MAC address');
@@ -114,14 +122,14 @@ if($version == 4 )
 	echo sprintf("%-16s", 'IP address');
 else
 	echo sprintf("%-40s", 'IP address');
-echo "<a href=index.php?version=$version&order=time&desc=";
+echo "<a href=index.php?version=$version&alive=$alive&order=time&desc=";
 echo ($order=='time' and $desc=='desc')?"asc":"desc";
 echo ">Time</a>".str_repeat(' ',17);
 foreach($category as $genre) {
 	foreach($types as $type) {
 		$column = strtoupper($genre).'-'.$maps[$type];
 		$urltype = urlencode($genre.'-'.$type);
-		echo "<a href=index.php?version=$version&order=$urltype&desc=";
+		echo "<a href=index.php?version=$version&alive=$alive&order=$urltype&desc=";
 		echo ($_REQUEST['order']==$genre.'-'.$type and $desc=='desc')?"asc":"desc";
 		echo ">$column</a>".str_repeat(' ',14-strlen($column));
 
@@ -131,19 +139,23 @@ echo "\n";
 //TODO sort raspberries
 if(strtolower($desc)!='desc')
 	$desc = '';
+if($alive)
+	$time = 'now()';
+else
+	$time = "'2014-01-01'";
 switch(strtolower($order)){
 case 'name':
-	$sql0 = "select code, mac from siteinfo where id >2 order by code ".$desc;
+	$sql0 = "select code, a.mac from siteinfo as a join (select distinct mac from raspresults.current$version where time > $time - interval 2 hour) as b on a.mac=b.mac where id >2 order by code ".$desc;
 	break;
 case 'time':
-	$sql0 = "select code, a.mac from ( select distinct mac, time from raspresults.current$version) as a join siteinfo as b on a.mac=b.mac order by time ".$desc;
+	$sql0 = "select code, a.mac from ( select distinct mac, time from raspresults.current$version where time > $time - interval 2 hour) as a join siteinfo as b on a.mac=b.mac order by time ".$desc;
 	break;
 case 'compound':
-	$sql0 = "select code, a.mac from ( select * from raspresults.current$version where genre='$gen' and type='$typ') as a join raspberry.siteinfo as b on a.mac=b.mac order by vmean ".$desc;
+	$sql0 = "select code, a.mac from ( select * from raspresults.current$version where genre='$gen' and type='$typ' and time > $time - interval 2 hour) as a join raspberry.siteinfo as b on a.mac=b.mac order by vmean ".$desc;
 	//echo "\n".$sql0."\n";
 	break;
 default:
-	$sql0 = "select code, mac from siteinfo where id >2 order by id ";
+	$sql0 = "select code, a.mac from siteinfo as a join (select distinct mac from raspresults.current$version where time > $time - interval 2 hour) as b on a.mac=b.mac where id >2".$desc;
 }
 $result0 = mysqli_query($con0, $sql0);  
 while($row0 = mysqli_fetch_assoc($result0))
