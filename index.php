@@ -206,7 +206,7 @@ while($row0 = mysqli_fetch_assoc($result0))
 	
 	echo "\n";
 }
-echo "</pre>\n<a href=plot/index.php?version=$version>Plot all</a><br />";
+echo "</pre>\n<a href=plot/index.php?version=$version&alive=$alive>Plot all</a><br />";
 mysqli_close($con0);
 mysqli_close($con);
 ?>

@@ -35,12 +35,14 @@ if($row0[0]==0)
 	$id=$id0;
 
 echo "<h2>Plot raw data: $code, $mac, IPv$version, $in3<h2>\n";
-$result2 = mysql_query("select webdomain, upper(asn),ip from perf_{$mac}_v$version where id=$id order by time desc limit 1", $link);
+$result2 = mysql_query("select upper(asn),ip from perf_{$mac}_v$version where id=$id order by time desc limit 1", $link);
+$row2 = mysql_fetch_array($result2);
+$asn = $row2[0];
+$ipaddr = $row2[1];
+$result2 = mysql_query("select webdomain from raspberry.ipv{$version}server where id=$id", $link);
 $row2 = mysql_fetch_array($result2);
 $domain = $row2[0];
-$asn = $row2[1];
-$ipaddr = $row2[2];
-echo "<h3>$id $domain, $asn, $ipaddr</h3>";
+echo "<h3>$id <a target=blank href=\"http://$domain\">$domain</a>, $asn, $ipaddr</h3>";
 
 
 if($in=="--OR--" and $correct==0)

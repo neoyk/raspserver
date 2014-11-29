@@ -34,7 +34,7 @@ while ($row = mysql_fetch_array($result))
 $len = count($data);
 $date = date_create();
 date_timestamp_set($date, $last_timestamp);
-$time = date_format($date, 'YmdHi');
+$time = date_format($date, 'Ymd H:i');
 
 $max = big_ceil(max($data));
 if((max($data)-min($data))/max($data)<0.01)
