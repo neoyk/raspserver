@@ -3,6 +3,7 @@ $mac =  $_POST['mac'];
 $data =  $_POST['data'];
 $v4stat =  $_POST['v4stat'];
 $v6stat =  $_POST['v6stat'];
+date_default_timezone_set('Asia/Chongqing');
 /*echo $mac."\n";
 echo $version."\n";
 echo $data."\n";

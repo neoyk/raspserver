@@ -1,4 +1,30 @@
 <?php
+function normalize($max)
+{
+	$u = '';
+	if($max>pow(10,6))
+	{
+	        $scale = pow(2,20);
+	        $max = number_format($max/$scale,1);
+	        $u = 'M';
+	}
+	elseif($max>pow(10,3))
+	{       //$left=$left+10;
+	        $scale = pow(2,10);
+	        $max = number_format($max/$scale,1);
+	        $u = 'K';
+	}
+	else
+	{
+	        $scale = 1;
+	        $max = number_format($max/$scale,1);
+	}
+	return (string)$max.$u;
+}
+function mac_full($mac)
+{
+	return substr($mac,0,2).':'.substr($mac,2,2).':'.substr($mac,4,2).':'.substr($mac,6,2).':'.substr($mac,8,2).':'.substr($mac,10,2);
+}
 function common($in)
 {
 	$ratio = 1;
@@ -38,18 +64,4 @@ function scale_unit($max)
 		$scale = 1;
 	return array($max,$scale,$unit);
 }
-$max = 1;  //最大数据值
-$p_x = array();
-$p_y = array();
-$in8=$_GET['color'];
-$t1=$_GET['time1'];
-$t2=$_GET['time2'];
-$inx=$_GET['xaxis'];
-$version = $_GET['version']; if($version == null or ($version!=4 and $version!=6))  $version = 4;
-if(isset($_GET['table']))
-	$table=$_GET['table'];
-else
-	exit();
-$link = mysql_connect("127.0.0.1", "root", "") or die('Connecting Failure!'); 
-$db = mysql_select_db('raspresults'); 
 ?>

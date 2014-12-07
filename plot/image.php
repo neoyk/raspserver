@@ -2,15 +2,15 @@
 $image = imagecreate($img_width, $img_height);  //创建画布
 $white = imagecolorallocate($image,0xFF,0xFF,0xFF);
 $black = imagecolorallocate($image,0x00,0x00,0x00);
-if($in8=="red")
+if($color=="red")
 	$line_color = imagecolorallocate($image,0xFF,0x00,0x00);
-else if($in8=="green")
+else if($color=="green")
 	$line_color = imagecolorallocate($image,0x00,0xFF,0x00);
-else if($in8=="purple")
+else if($color=="purple")
 	$line_color = imagecolorallocate($image,0x80,0x00,0x80);
-else if($in8=="yellow")
+else if($color=="yellow")
 	$line_color = imagecolorallocate($image,0xFF,0xFF,0x80);
-else if($in8=="black")
+else if($color=="black")
 	$line_color = imagecolorallocate($image,0x00,0x00,0x00);
 else
 	$line_color = imagecolorallocate($image,0x00,0x00,0xFF);

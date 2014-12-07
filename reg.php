@@ -7,17 +7,17 @@
 <h2>树莓派命名页面</h2>
 <form name = "query" action = "reg.php" method = "get">
 <?php
+require("function.php");
 $link = mysql_connect("localhost","root", "") or die('Connection Failure!'); 
 $db = mysql_select_db("raspberry");  
 $code = mysql_escape_string($_GET['code']);
-$desc = mysql_escape_string($_GET['desc']);
 $mac = strtolower(mysql_escape_string($_GET['mac']));
+$macfull = mac_full($mac);
 echo "
-MAC地址：<input name = \"mac\" size=20 type = \"text\" value=\"$mac\"/><br />
+MAC地址：$macfull<br /><input name = \"mac\" size=20 type = \"hidden\" value=\"$mac\"/ readonly>
 名字：<input name = \"code\" size=20 type = \"text\" value=\"$code\"/><br />
-描述：<input name = \"desc\" size=60 type = \"text\" value=\"$desc\" /><br />
 MAC地址要求纯数字，无空格，必须唯一，如：b827eb6c383f；名字：perf_地区代码_机构简称，描述不超过50个汉字
-<br /><input name = \"action\" type = \"submit\" value = \"提交\" />
+<br /><input name = \"action\" type = \"submit\" value = \"提交\" /> <a href=index.php>Return</a>
 </form>
 ";
 if(strlen($mac) and strlen($code))

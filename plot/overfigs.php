@@ -1,10 +1,11 @@
 <?php
-require("function.php");
+require("../function.php");
+require("para.php");
 $img_height = 110;  //画布高度
-$img_width = 195;  //画布宽度
+$img_width = 187;  //画布宽度
 $jiange = 0;  //刻度之间的间隔
-$left = 50;  //左侧留下的宽度
-$right = 4;  //右侧留下的宽度
+$left = 45;  //左侧留下的宽度
+$right = 1;  //右侧留下的宽度
 $up = 20;  //上面留下的宽度
 $down = 20;  //下面留下的宽度
 $type=$_GET['type'];
@@ -31,12 +32,15 @@ else
 	  $initial .= $w[0];
 	}
 }
-list($valuenow,$scale,$unit) = scale_unit(end($data));
-$valuenow = round($valuenow,1);
-list($avg,$scale,$uavg) = scale_unit(array_sum($data)/$len);
-$avg = round($avg,1);
-imagestring($image, 4, $left-10, 0,"avg/now:$avg$uavg/$valuenow$unit",$black);
-imagestring($image, 4, $left, $img_height-$down,"$len $time",$black);
+$unit = '';
+if(count($data)){
+	list($valuenow,$scale,$unit) = scale_unit(end($data));
+	$valuenow = round($valuenow,1);
+	list($avg,$scale,$uavg) = scale_unit(array_sum($data)/$len);
+	$avg = round($avg,1);
+	imagestring($image, 4, $left-10, 0,"avg/now:$avg$uavg/$valuenow$unit",$black);
+	imagestring($image, 4, $left-2, $img_height-$down,"$len $time",$black);
+}
 if($entry =='avgbw')
 imagestringup($image, 4, 0, ($up+$img_height)/1.4,"bw($unit"."b/s)",$black);
 if($entry=='avgrtt')

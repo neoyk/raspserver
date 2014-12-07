@@ -1,5 +1,6 @@
 <?php
-require("function.php");
+require("../function.php");
+require("para.php");
 $img_height = 110;  //画布高度
 $img_width = 195;  //画布宽度
 $jiange = 0;  //刻度之间的间隔

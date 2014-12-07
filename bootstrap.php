@@ -59,8 +59,8 @@ echo "reset slave\n";
 echo "change master to MASTER_HOST='perf.sasm3.net',master_user='repl',master_password='perf@CERNET2014',master_log_file='".$row[0]."',master_log_pos=".$row[1]."\n";
 echo "start slave\n";
 		 */
-//foreach(array('perf.sh', 'webcrawl.py', 'ipdetection.py', 'ipv4mnt.py', 'ipv6mnt.py', 'upload.py' ) as $filename)
-foreach(array('webcrawl.py' ) as $filename)
+foreach(array('perf.sh', 'webcrawl.py', 'ipdetection.py', 'ipv4mnt.py', 'ipv6mnt.py', 'upload.py' ) as $filename)
+//foreach(array('ipdetection.py','webcrawl.py','ipv4' ) as $filename)
 {
 	echo "system wget http://perf.sasm3.net/raspberry/code/$filename -O /root/mnt/$filename\n";
 }
