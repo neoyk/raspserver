@@ -1,23 +1,27 @@
 <?php
+function timeformat($time)
+{
+	$timestamp = strtotime($time);
+	return date('Ymd-His',$timestamp);
+}
+
 function normalize($max)
 {
 	$u = '';
-	if($max>pow(10,6))
+	$scale = pow(10,6);
+	if($max>pow(10,3))
 	{
-	        $scale = pow(2,20);
-	        $max = number_format($max/$scale,1);
-	        $u = 'M';
-	}
+	    $max = number_format($max/$scale,4);
+	    $u = 'M';
+	}/*
 	elseif($max>pow(10,3))
-	{       //$left=$left+10;
-	        $scale = pow(2,10);
-	        $max = number_format($max/$scale,1);
-	        $u = 'K';
-	}
+	{       
+	    $max = number_format($max/$scale,4);
+	    $u = 'M';
+	}*/
 	else
 	{
-	        $scale = 1;
-	        $max = number_format($max/$scale,1);
+	    $max = number_format($max,1);
 	}
 	return (string)$max.$u;
 }

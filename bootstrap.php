@@ -59,9 +59,12 @@ echo "reset slave\n";
 echo "change master to MASTER_HOST='perf.sasm3.net',master_user='repl',master_password='perf@CERNET2014',master_log_file='".$row[0]."',master_log_pos=".$row[1]."\n";
 echo "start slave\n";
 		 */
-foreach(array('perf.sh', 'webcrawl.py', 'ipdetection.py', 'ipv4mnt.py', 'ipv6mnt.py', 'upload.py' ) as $filename)
+foreach(array('perf.sh', 'webcrawl.py', 'ipdetection.py', 'ipv4mnt.py', 'ipv6mnt.py', 'upload.py', 'syncweb.py' ) as $filename)
 //foreach(array('ipdetection.py','webcrawl.py','ipv4' ) as $filename)
 {
-	echo "system wget http://perf.sasm3.net/raspberry/code/$filename -O /root/mnt/$filename\n";
+	$md5sum = md5_file("/var/www/html/raspberry/code/$filename");
+	echo "system if [ `/usr/bin/md5sum /root/mnt/$filename|cut -d' ' -f1` != '$md5sum' ] ; then /usr/bin/wget http://perf.sasm3.net/raspberry/code/$filename -O /root/mnt/$filename.new; fi\n";
+	echo "system if [ `/usr/bin/md5sum /root/mnt/$filename.new|cut -d' ' -f1` = '$md5sum' ] ; then /bin/mv /root/mnt/$filename.new /root/mnt/$filename; fi\n";
+	//echo "system wget http://perf.sasm3.net/raspberry/code/$filename -O /root/mnt/$filename.new\n";
 }
 ?>

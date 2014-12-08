@@ -42,23 +42,23 @@ while($row0 = mysqli_fetch_assoc($result0))
 //exit();
 if($version==4)
 {
-	foreach(array('Domestic Academic','Domestic Business','overall') as $type) {
+	foreach(array('Domestic Academic','Domestic Business') as $type) {
 		if(($key = array_search($type, $types)) !== false) {
 		    unset($types[$key]);
 		}
 	}
 }
 echo "<pre>\n";
-echo "<a href=index.php?version=$version&alive=$alive&order=name&desc=";
+echo "<a href=index.php?version=$version&cat=$cat&alive=$alive&order=name&desc=";
 echo ($order=='name' and $desc=='desc')?"asc":"desc";
 echo ">Name</a>".str_repeat(' ',12);
 echo sprintf("%-18s", 'MAC address');
 if($version == 4 )
-	echo sprintf("%-16s", 'IP address');
+	echo sprintf("%-16s", 'Public IP').sprintf("%-16s", ' Local IP');
 else
-	echo sprintf("%-40s", 'IP address');
-echo "ASN     ";
-echo "<a href=index.php?version=$version&alive=$alive&order=time&desc=";
+	echo sprintf("%-40s", 'Public IP');
+echo " ASN     ";
+echo "<a href=index.php?version=$version&cat=$cat&alive=$alive&order=time&desc=";
 echo ($order=='time' and $desc=='desc')?"asc":"desc";
 echo ">Datetime</a>".str_repeat(' ',7);
 foreach($category as $genre) {
@@ -67,7 +67,7 @@ foreach($category as $genre) {
 	foreach($types as $type) {
 		$column = strtoupper($genre).'-'.$maps[$type];
 		$urltype = urlencode($genre.'-'.$type);
-		echo str_repeat(' ',9-strlen($column))."<a href=index.php?version=$version&cat=$cat&alive=$alive&order=$urltype&desc=";
+		echo str_repeat(' ',11-strlen($column))."<a href=index.php?version=$version&cat=$cat&alive=$alive&order=$urltype&desc=";
 		echo (isset($_REQUEST['order']) and $_REQUEST['order']==$genre.'-'.$type and $desc=='desc')?"asc":"desc";
 		echo ">$column</a>";
 
@@ -113,6 +113,10 @@ while($row0 = mysqli_fetch_assoc($result0))
 	$addr = mysqli_fetch_assoc($result);
 	if($version==4)
 	{
+		if(preg_match("/IF:(\d+\.\d+\.\d+\.\d+)/",$addr["ipv4"],$matches))
+			$local_if = $matches[1];
+		else
+			$local_if = 'N/A';
 		$parts = explode("+",$addr["ipv4"]);
 		list($prefix, $address) = explode(":",$parts[0]);
 		$parts = explode("+",$addr["asn4"]);
@@ -126,13 +130,14 @@ while($row0 = mysqli_fetch_assoc($result0))
 	$macfull = mac_full($mac);
 	echo "$macfull <a href=address.php?mac=$mac>$address</a> ";
 	if($version==4)
-		echo  str_repeat(' ',15-strlen($address));
+	{	
+		echo  str_repeat(' ',16-strlen($address)).$local_if.str_repeat(' ',16-strlen($local_if));
+	}
 	else
 		echo  str_repeat(' ',39-strlen($address));
 	echo substr($asn,2).str_repeat(' ',10-strlen($asn));
 	date_default_timezone_set('Asia/Chongqing');
-	$timestamp = strtotime($data[$mac]["time"]);
-	$timestr = date('Ymd-His',$timestamp);
+	$timestr = timeformat($data[$mac]["time"]);
 	echo "$timestr";
 	foreach($category as $gen)
 	{
@@ -147,14 +152,15 @@ while($row0 = mysqli_fetch_assoc($result0))
 			//$stdv = normalize($stdv);
 
 			$urltyp = urlencode($type);
-			echo str_repeat(' ',9-strlen($vmean))."$vmean";
+			echo str_repeat(' ',11-strlen($vmean))."$vmean";
 			//echo str_repeat(' ',6-strlen($vmean))."<a href=\"plot/overall.php?code=$code&mac=$mac&type=$urltyp&version=$version&avg$gen=1\">$vmean/$stdv</a>".str_repeat(' ',7-strlen($stdv));
 		}
 	}
 	
 	echo "\n";
 }
-echo "</pre>\n<a href=plot.php?version=$version&alive=$alive>Plot all</a><br />";
+echo "</pre>\n";
+//echo "</pre>\n<a href=plot.php?version=$version&alive=$alive>Plot all</a><br />";
 mysqli_close($con0);
 mysqli_close($con);
 ?>
@@ -164,8 +170,9 @@ Details: <a href=perf.php?version=<?php echo $version;?>>bandwidth</a>&nbsp;
 <a href=perf.php?perf=avgrtt&version=<?php echo $version;?>>latency</a>&nbsp;
 <a href=perf.php?perf=avgloss&version=<?php echo $version;?>>lossrate</a>&nbsp;
 --!>
-<a href=websites.php>Website list</a>&nbsp;
+<hr><a href=websites.php>Website list</a>&nbsp;
 <br><a href=raspbian.tar.gz>Image Download</a>&nbsp; <a href=rasp_manual.pdf>Manual</a>
 <br>Md5sum:<br>79760fdfc4fda10c4239756671fa4f37 raspbian.img<br>d8def80b589f410e55f31b39990099a9 raspbian.tar.gz
+<?php include("tail.php");?>
 </body>
 </html>

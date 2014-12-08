@@ -14,7 +14,7 @@
 require("header.php");
 $types = array('Domestic Academic','Domestic Business','CERNET','CM','CT','CU','International Academic','International Business','overall');
 if($version==4)
-	$exclude = array('Domestic Academic','Domestic Business','overall');
+	$exclude = array('Domestic Academic','Domestic Business');
 else
 	$exclude = array('Domestic Business','CERNET','CM','CT','CU');
 
@@ -24,7 +24,7 @@ foreach($exclude as $type) {
 	}
 }
 echo "<table><tr>";
-echo "<td><a href=plot.php?version=$version&alive=$alive&order=name&desc=";
+echo "<td><a href=plot.php?version=$version&cat=$cat&alive=$alive&order=name&desc=";
 echo ($order=='name' and $desc=='desc')?"asc":"desc";
 echo ">Name</a></td>";
 echo '<td>MAC address</td>';
@@ -88,9 +88,10 @@ while($row0 = mysqli_fetch_assoc($result0))
 	}
 	echo "</tr>";
 }
-echo "</table>\n";
+echo "</table>\n<hr>";
 mysqli_close($con0);
 mysqli_close($con);
+include("tail.php");
 ?>
 </body>
 </html>

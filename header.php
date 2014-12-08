@@ -14,12 +14,6 @@ else
 	$alive = 1;
 if($alive!=1)
 	$alive = 0;
-echo "<p>SASM3 probe list - ";
-if($alive)
-	echo " <b>alive only</b>, <a href=$callpage?version=$version&alive=0>all probes</a>";
-else
-	echo " <a href=$callpage?version=$version&alive=1>alive only</a>, <b>all probe</b>";
-echo " | ";
 if( isset($_REQUEST['cat']))
 	$cat = strval($_REQUEST['cat']);
 else
@@ -28,6 +22,18 @@ $category = array('bw','rtt','loss','all');
 if(!in_array($cat,$category) and $cat!='all')
 	$cat = $category[0];
 $CAT = strtoupper($cat);
+echo "<p><img src=img/sasm-logo.jpg height=30>\n";
+echo "probe list - ";
+if($alive)
+	echo " <b>alive only</b>, <a href=$callpage?version=$version&cat=$cat&alive=0>all probes</a>";
+else
+	echo " <a href=$callpage?version=$version&cat=$cat&alive=1>alive only</a>, <b>all probe</b>";
+echo " | ";
+if($callpage=='index.php')
+	echo " <b>list</b>, <a href=plot.php?version=$version&cat=$cat&alive=$alive>Plot</a>";
+else
+	echo " <a href=index.php?version=$version&cat=$cat&alive=$alive>list</a>, <b>Plot</b>";
+echo " | ";
 foreach($version_array as $v) {
 	foreach ($category as $c) {
 		if($cat==$c and $version == $v)
@@ -50,7 +56,7 @@ $maps['CT'] = 'CT';
 $maps['CU'] = 'CU';
 $maps['CM'] = 'CM';
 $maps['CERNET'] = 'CE';
-$maps['overall'] = 'all';
+$maps['overall'] = 'AVE';
 $maps['Domestic Academic'] = "CE";
 $maps['Domestic Business'] = "DB";
 $maps['International Academic'] = "IA";
@@ -74,4 +80,5 @@ if(isset( $_REQUEST['desc']))
 	$desc = $_REQUEST['desc'];
 else
 	$desc = 'asc';
+echo "<hr>";
 ?>
