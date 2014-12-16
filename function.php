@@ -1,6 +1,7 @@
 <?php
 function timeformat($time)
 {
+	date_default_timezone_set('Asia/Chongqing');
 	$timestamp = strtotime($time);
 	return date('Ymd-His',$timestamp);
 }

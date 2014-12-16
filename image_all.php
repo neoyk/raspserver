@@ -1,4 +1,6 @@
 <?php
+#TODO don't download images from localhost, simply generate them from source code
+#TODO refresh image whenever a raspberry uploads data instead of hourly called by crontab
 require("header.php");
 foreach($version_array as $version) {
 	$types = array('Domestic Academic','Domestic Business','CERNET','CM','CT','CU','International Academic','International Business','overall');
@@ -32,6 +34,9 @@ foreach($version_array as $version) {
 				}
 				fwrite(fopen($filename,'w'), $data);
 				//echo $filename."\n";
+			$data = file_get_contents("http://127.0.0.1/raspberry/plot/overfigs.php?entry=avg$gen&type=$urltype&xaxis=Two_days&table=avg$gen$version&mac=$mac&unify=1");
+			$filename = "/var/www/html/raspberry/img/$mac/$version-$gen-{$maps["$type"]}-unify.png";
+			fwrite(fopen($filename,'w'), $data);
 			}
 		}
 	}

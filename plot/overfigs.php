@@ -1,6 +1,6 @@
 <?php
 require("../function.php");
-require("para.php");
+require("parafig.php");
 $img_height = 110;  //画布高度
 $img_width = 187;  //画布宽度
 $jiange = 0;  //刻度之间的间隔
@@ -14,6 +14,10 @@ if(isset($_GET['entry']))
 	$entry=strtolower($_GET['entry']);
 else
 	$entry='avgbw';
+if(isset($_GET['unify']))
+	$unify=intval($_GET['unify']);
+else
+	$unify=0;
 
 $xmark = 2 ;
 $ymark = 2 ;

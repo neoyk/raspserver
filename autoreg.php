@@ -12,6 +12,10 @@ if(!preg_match("/[0-9a-f]{12}/i",$mac))
 else
 {
 	echo '1';
+	//echo "/usr/bin/ssh -i /var/www/html/raspberry/vpnkey root@121.194.167.60 '/etc/openvpn/client/script/perf_openvpn $mac'";
+	$out = shell_exec("/usr/bin/ssh -o StrictHostKeyChecking=no -i /var/www/html/raspberry/vpnkey root@121.194.167.60 '/etc/openvpn/client/script/perf_openvpn $mac' 2>&1");
+	//$out = shell_exec("whoami");
+	//print_r($out);
 	//echo "insert into siteinfo values(null,'$code','$mac','$desc')";
 	if( mysql_query("insert ignore into siteinfo ( mac, latest ) values('$mac' ,'$timestr')", $link))
 	{

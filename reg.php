@@ -16,7 +16,6 @@ $macfull = mac_full($mac);
 echo "
 MAC地址：$macfull<br /><input name = \"mac\" size=20 type = \"hidden\" value=\"$mac\"/ readonly>
 名字：<input name = \"code\" size=20 type = \"text\" value=\"$code\"/><br />
-MAC地址要求纯数字，无空格，必须唯一，如：b827eb6c383f；名字：perf_地区代码_机构简称，描述不超过50个汉字
 <br /><input name = \"action\" type = \"submit\" value = \"提交\" /> <a href=index.php>Return</a>
 </form>
 ";

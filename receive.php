@@ -66,4 +66,5 @@ foreach($stat46 as $key => $stat)
 	}
 }
 echo $count;
+exec("php /var/www/html/raspberry/image_single.php $mac ",$output);
 ?>

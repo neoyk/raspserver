@@ -20,8 +20,9 @@ $(document).ready(function(){
 <?php
 	
 	require('paraparser.php');
-	
-	echo "<h3>$code, $mac, $in3, IPv$version ";
+	include('../function.php');
+	$macfull = mac_full($mac);
+	echo "<h3>$code, $macfull, $in3, IPv$version ";
 	foreach($para as $entry)echo ", $entry";
 	$map = array('avgbw'=>'bandwidth','avgrtt'=>'latency','avgloss'=>'lossrate');
 $where = urlencode("type='$in3'");

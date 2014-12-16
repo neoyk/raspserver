@@ -25,7 +25,9 @@ $result0 = mysql_query("select max(time) from $table where mac='$mac' and type='
 #file_put_contents('/var/www/html/raspberry/plot/debug',$cmd);
 $row0 = mysql_fetch_array($result0);
 $date = $row0[0];
-echo "<h3>Raw data:$code, $mac, $type, $entry, IPv$version</h3>\n";
+include('../function.php');
+$macfull = mac_full($mac);
+echo "<h3>Raw data:$code, $macfull, $type, $entry, IPv$version</h3>\n";
 $cmd = "select $entry,time from $table where mac='$mac' and type='$type'";
 if($inx=="Two_days")
 	$cmd .= "and time>= now()- interval 48 hour ";

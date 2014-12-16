@@ -13,9 +13,9 @@ require("header.php");
 $data = array();
 $types = array();
 if($cat=='all')
-	$sql = "select * from raspresults.current$version order by type "; 
+	$sql = "select * from raspresults.current$version order by type"; 
 else
-	$sql = "select * from raspresults.current$version where genre='$cat' order by type ";
+	$sql = "select * from raspresults.current$version where genre='$cat' order by type";
 $result0 = mysqli_query($con0, $sql);  
 while($row0 = mysqli_fetch_assoc($result0))
 {	
@@ -56,7 +56,7 @@ echo sprintf("%-18s", 'MAC address');
 if($version == 4 )
 	echo sprintf("%-16s", 'Public IP').sprintf("%-16s", ' Local IP');
 else
-	echo sprintf("%-40s", 'Public IP');
+	echo sprintf("%-39s", 'Public IP');
 echo " ASN     ";
 echo "<a href=index.php?version=$version&cat=$cat&alive=$alive&order=time&desc=";
 echo ($order=='time' and $desc=='desc')?"asc":"desc";
@@ -73,6 +73,8 @@ foreach($category as $genre) {
 
 	}
 }
+if($cat=='all')
+	echo "  CPU  Disk  Version";
 echo " \n";
 if(strtolower($desc)!='desc')
 	$desc = '';
@@ -82,45 +84,61 @@ else
 	$time = "'2014-01-01'";
 switch(strtolower($order)){
 case 'name':
-	$sql0 = "select code, mac from siteinfo where latest > $time - interval 2 hour order by code ".$desc;
+	$sql0 = "select code, mac, description, latest from siteinfo where latest > $time - interval 20 minute order by code ".$desc;
 	break;
 case 'time':
-	$sql0 = "select code, a.mac from ( select distinct mac, time from raspresults.current$version where time > $time - interval 2 hour) as a join siteinfo as b on a.mac=b.mac order by time ".$desc;
+	$sql0 = "select code, mac, description, latest from siteinfo where latest > $time - interval 20 minute order by latest ".$desc;
 	break;
 case 'compound':
-	$sql0 = "select code, a.mac from ( select * from raspresults.current$version where genre='$sgenre' and type='$stype' and time > $time - interval 2 hour) as a join raspberry.siteinfo as b on a.mac=b.mac order by vmean ".$desc;
+	$sql0 = "select code, b.mac,description,latest from ( select * from raspresults.current$version where genre='$sgenre' and type='$stype' and time>now()- interval 120 minute) as a right join raspberry.siteinfo as b on a.mac=b.mac where latest > $time - interval 20 minute order by vmean ".$desc;
 	//echo "\n".$sql0."\n";
 	break;
 default:
-	$sql0 = "select code, mac from siteinfo where latest > $time - interval 2 hour";
+	$sql0 = "select code, mac, description, latest from siteinfo where latest > $time - interval 20 minute";
 }
 $result0 = mysqli_query($con0, $sql0);  
 while($row0 = mysqli_fetch_assoc($result0))
 {	
 	$mac = $row0["mac"];
 	$code = $row0["code"];
+	$data[$mac]["latest"] = $row0["latest"];
+	if(strpos($row0["description"],'|')!==false)
+		list($cpu,$disk, $code_version) = explode('|',$row0["description"]);
+	else{
+		$cpu = 'N/A';
+		$disk = 'N/A';
+		$code_version = '1.0';
+	}
 	if(strlen($code)<5)
 	{	
 		$code = sprintf("%-15s", 'input name');
 		echo "<a href=reg.php?mac=$mac>$code</a> ";
 	}else
 	{
-		$code = sprintf("%-15s", $code);
-		echo "$code ";
+		//$code = sprintf("%-15s", $code);
+		echo "<a href=control.php?mac=$mac&code=$code>$code</a>".str_repeat(' ',16-strlen($code));
 	}
 	$sql = "select ipv$version, asn$version from perf_{$mac}_address order by time desc limit 1";
 	$result = mysqli_query($con,$sql);
 	$addr = mysqli_fetch_assoc($result);
-	if($version==4)
+	if($result->num_rows === 0)
+	{
+		$local_if = 'N/A';
+		$address = 'N/A';
+
+	}
+	elseif($version==4)
 	{
 		if(preg_match("/IF:(\d+\.\d+\.\d+\.\d+)/",$addr["ipv4"],$matches))
 			$local_if = $matches[1];
 		else
 			$local_if = 'N/A';
 		$parts = explode("+",$addr["ipv4"]);
-		list($prefix, $address) = explode(":",$parts[0]);
+		list($isp, $address) = explode(":",$parts[0]);
 		$parts = explode("+",$addr["asn4"]);
-		list($prefix, $asn) = explode(":",$parts[0]);
+		list($isp, $asn) = explode(":",$parts[0]);
+		if($asn=='NO RECORD')
+			$asn='  N/A';
 	}
 	else{
 		$address = $addr["ipv6"];
@@ -136,8 +154,7 @@ while($row0 = mysqli_fetch_assoc($result0))
 	else
 		echo  str_repeat(' ',39-strlen($address));
 	echo substr($asn,2).str_repeat(' ',10-strlen($asn));
-	date_default_timezone_set('Asia/Chongqing');
-	$timestr = timeformat($data[$mac]["time"]);
+	$timestr = timeformat($data[$mac]["latest"]);
 	echo "$timestr";
 	foreach($category as $gen)
 	{
@@ -145,34 +162,30 @@ while($row0 = mysqli_fetch_assoc($result0))
 			continue;
 		foreach($types as $type)
 		{
-			$vmean = $data[$mac][$gen][$type]['vmean'];
-			$vmean = normalize($vmean);
-
+			if(!array_key_exists("time", $data[$mac]) or strtotime($data[$mac]["latest"])-strtotime($data[$mac]["time"])>7200 or time()-strtotime($data[$mac]["time"])>7200)
+				$vmean='N/A';
+			else{
+				if($gen=='bw')
+					$vmean = normalize($data[$mac][$gen][$type]['vmean']);
+				else
+					$vmean = number_format($data[$mac][$gen][$type]['vmean'], 1);
 			//$stdv = $data[$mac][$gen][$type]['stdv'];
 			//$stdv = normalize($stdv);
+			}
 
-			$urltyp = urlencode($type);
 			echo str_repeat(' ',11-strlen($vmean))."$vmean";
-			//echo str_repeat(' ',6-strlen($vmean))."<a href=\"plot/overall.php?code=$code&mac=$mac&type=$urltyp&version=$version&avg$gen=1\">$vmean/$stdv</a>".str_repeat(' ',7-strlen($stdv));
 		}
 	}
-	
+	if($cat=='all')
+		echo '  '.$cpu.'  '.$disk.'  '.$code_version;
 	echo "\n";
 }
 echo "</pre>\n";
 //echo "</pre>\n<a href=plot.php?version=$version&alive=$alive>Plot all</a><br />";
 mysqli_close($con0);
 mysqli_close($con);
+//<br><a href=raspbian.tar.gz>Image Download</a>&nbsp; <a href=rasp_manual.pdf>Manual</a> Md5sum: ca08c77e71cf27a225dad3f3c78f2ffd raspbian.tar.gz
 ?>
-<!--
-<br>
-Details: <a href=perf.php?version=<?php echo $version;?>>bandwidth</a>&nbsp;
-<a href=perf.php?perf=avgrtt&version=<?php echo $version;?>>latency</a>&nbsp;
-<a href=perf.php?perf=avgloss&version=<?php echo $version;?>>lossrate</a>&nbsp;
---!>
-<hr><a href=websites.php>Website list</a>&nbsp;
-<br><a href=raspbian.tar.gz>Image Download</a>&nbsp; <a href=rasp_manual.pdf>Manual</a>
-<br>Md5sum:<br>79760fdfc4fda10c4239756671fa4f37 raspbian.img<br>d8def80b589f410e55f31b39990099a9 raspbian.tar.gz
-<?php include("tail.php");?>
+<hr><?php include("tail.php");?>
 </body>
 </html>

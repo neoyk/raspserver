@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Chongqing');
 $callpage = basename($_SERVER['SCRIPT_FILENAME']);
 require("function.php");
 if( isset($_REQUEST['version']))
@@ -14,6 +15,10 @@ else
 	$alive = 1;
 if($alive!=1)
 	$alive = 0;
+if( isset($_REQUEST['unify']))
+	$unify = intval($_REQUEST['unify']);
+else
+	$unify = 0;
 if( isset($_REQUEST['cat']))
 	$cat = strval($_REQUEST['cat']);
 else
@@ -22,24 +27,26 @@ $category = array('bw','rtt','loss','all');
 if(!in_array($cat,$category) and $cat!='all')
 	$cat = $category[0];
 $CAT = strtoupper($cat);
-echo "<p><img src=img/sasm-logo.jpg height=30>\n";
-echo "probe list - ";
+echo "<p><a href=websites.php><img src=img/sasm-logo.jpg height=30></a>\n";
+echo "probes - ";
 if($alive)
 	echo " <b>alive only</b>, <a href=$callpage?version=$version&cat=$cat&alive=0>all probes</a>";
 else
 	echo " <a href=$callpage?version=$version&cat=$cat&alive=1>alive only</a>, <b>all probe</b>";
 echo " | ";
 if($callpage=='index.php')
-	echo " <b>list</b>, <a href=plot.php?version=$version&cat=$cat&alive=$alive>Plot</a>";
+	echo " <b>list</b>, <a href=plot.php?version=$version&cat=$cat&alive=$alive>Plot</a>, <a href=plot.php?version=$version&cat=$cat&alive=$alive&unify=1>Plot2</a>";
+elseif($unify==0)
+	echo " <a href=index.php?version=$version&cat=$cat&alive=$alive>list</a>, <b>Plot</b>, <a href=plot.php?version=$version&cat=$cat&alive=$alive&unify=1>Plot2</a>";
 else
-	echo " <a href=index.php?version=$version&cat=$cat&alive=$alive>list</a>, <b>Plot</b>";
+	echo " <a href=index.php?version=$version&cat=$cat&alive=$alive>list</a>, <a href=plot.php?version=$version&cat=$cat&alive=$alive>Plot</a>, <b>Plot2</b>";
 echo " | ";
 foreach($version_array as $v) {
 	foreach ($category as $c) {
 		if($cat==$c and $version == $v)
 			echo '<b>IPv'.$v.'-'.strtoupper($c).'</b>&nbsp;';
 		else
-			echo "<a href=$callpage?version=$v&alive=$alive&cat=$c>IPv".$v.'-'.strtoupper($c).'</a>&nbsp;';
+			echo "<a href=$callpage?unify=$unify&version=$v&alive=$alive&cat=$c>IPv".$v.'-'.strtoupper($c).'</a>&nbsp;';
 	}
 }
 //echo "| mean value</p>\n";

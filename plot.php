@@ -24,7 +24,7 @@ foreach($exclude as $type) {
 	}
 }
 echo "<table><tr>";
-echo "<td><a href=plot.php?version=$version&cat=$cat&alive=$alive&order=name&desc=";
+echo "<td><a href=plot.php?unify=$unify&version=$version&cat=$cat&alive=$alive&order=name&desc=";
 echo ($order=='name' and $desc=='desc')?"asc":"desc";
 echo ">Name</a></td>";
 echo '<td>MAC address</td>';
@@ -34,7 +34,7 @@ foreach($category as $genre) {
 	foreach($types as $type) {
 		$column = strtoupper($genre).'-'.$maps[$type];
 		$urltype = urlencode($genre.'-'.$type);
-		echo "<td align=center><a href=plot.php?version=$version&cat=$cat&alive=$alive&order=$urltype&desc=";
+		echo "<td align=center><a href=plot.php?unify=$unify&version=$version&cat=$cat&alive=$alive&order=$urltype&desc=";
 		echo ( isset($_REQUEST['order']) and $_REQUEST['order']==$genre.'-'.$type and $desc=='desc')?"asc":"desc";
 		echo ">$column</a></td>";
 	}
@@ -48,17 +48,17 @@ else
 	$time = "'2014-01-01'";
 switch(strtolower($order)){
 case 'name':
-	$sql0 = "select code, mac from siteinfo where latest > $time - interval 2 hour order by code ".$desc;
+	$sql0 = "select code, mac from siteinfo where latest > $time - interval 20 minute order by code ".$desc;
 	break;
 case 'time':
-	$sql0 = "select code, a.mac from ( select distinct mac, time from raspresults.current$version where time > $time - interval 2 hour) as a join siteinfo as b on a.mac=b.mac order by time ".$desc;
+	$sql0 = "select code, mac from siteinfo where latest > $time - interval 20 minute order by latest ".$desc;
 	break;
 case 'compound':
-	$sql0 = "select code, a.mac from ( select * from raspresults.current$version where genre='$sgenre' and type='$stype' and time > $time - interval 2 hour) as a join raspberry.siteinfo as b on a.mac=b.mac order by vmean ".$desc;
+	$sql0 = "select code, b.mac from ( select * from raspresults.current$version where genre='$sgenre' and type='$stype' and time>now()- interval 120 minute) as a right join raspberry.siteinfo as b on a.mac=b.mac where latest > $time - interval 20 minute order by vmean ".$desc;
 	//echo "\n".$sql0."\n";
 	break;
 default:
-	$sql0 = "select code, mac from siteinfo where latest > $time - interval 2 hour";
+	$sql0 = "select code, mac from siteinfo where latest > $time - interval 20 minute";
 }
 $result0 = mysqli_query($con0, $sql0);  
 while($row0 = mysqli_fetch_assoc($result0))
@@ -69,7 +69,7 @@ while($row0 = mysqli_fetch_assoc($result0))
 	if(strlen($code)<5)
 	{	
 		$code = 'input name';
-		echo "<tr><td><a href=../reg.php?mac=$mac>$code</a></td><td>$macfull </td>";
+		echo "<tr><td><a href=reg.php?mac=$mac>$code</a></td><td>$macfull </td>";
 	}else
 		echo "<tr><td>$code </td><td>$macfull </td>\n";
 	foreach($category as $gen)
@@ -81,7 +81,10 @@ while($row0 = mysqli_fetch_assoc($result0))
 			echo "<td>";
 			$urltype = urlencode($type);
 			echo "<a href=\"plot/overall.php?code=$code&mac=$mac&type=$urltype&version=$version&avg$gen=1\">";
-			echo "<img src=img/$mac/$version-$gen-{$maps["$type"]}.png";
+			if($unify==0)
+				echo "<img src=img/$mac/$version-$gen-{$maps["$type"]}.png";
+			else
+				echo "<img src=img/$mac/$version-$gen-{$maps["$type"]}-unify.png";
 			//"/overfigs.php?entry=avg$gen&type=$urltype&xaxis=Two_days&table=avg$gen$version&mac=$mac
 			echo " /></a></td>\n";
 		}

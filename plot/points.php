@@ -4,7 +4,13 @@ if(count($p_x)) {
 	for ($i=0;$i<=$ymark;$i++)
 	{
 		imageline($image, $left, $up+($img_height-$up-$down)*$i/$ymark, $left+6, $up+($img_height-$up-$down)*$i/$ymark, $black);  //画出y轴i/$ymark刻度的值
-		imagestring($image, 4, 20, $up+($img_height-$up-$down)*$i/$ymark-$ymark, round($max*($ymark-$i)/$ymark+$min*$i/$ymark), $black);
+		$ystring = $max*($ymark-$i)/$ymark+$min*$i/$ymark;
+		if($ystring<10)
+			$ystring = round($ystring,1);
+		else
+			$ystring = round($ystring);
+
+		imagestring($image, 4, 20, $up+($img_height-$up-$down)*$i/$ymark-$ymark, $ystring, $black);
 		ImageDashedLine($image,$left,$up+($img_height-$up-$down)*$i/$ymark,$img_width-$right,$up+($img_height-$up-$down)*$i/$ymark,$black);//plot dashedline
 	}
 	if(strpos($callpage,'s.php')===False){
