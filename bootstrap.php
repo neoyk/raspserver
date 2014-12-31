@@ -59,7 +59,7 @@ echo "reset slave\n";
 echo "change master to MASTER_HOST='perf.sasm3.net',master_user='repl',master_password='perf@CERNET2014',master_log_file='".$row[0]."',master_log_pos=".$row[1]."\n";
 echo "start slave\n";
 		 */
-foreach(array('autoreg.py', 'perf.sh', 'webcrawl.py', 'ipdetection.py', 'ipv4mnt.py', 'ipv6mnt.py', 'keepalive.py', 'autoreg.py','upload.py','mac.py' ) as $filename)
+foreach(array('syncweb.py', 'perf.sh', 'webcrawl.py', 'ipdetection.py', 'ipv4mnt.py', 'ipv6mnt.py', 'keepalive.py', 'upload.py','mac.py' ) as $filename)
 //foreach(array('ipdetection.py','webcrawl.py','ipv4' ) as $filename)
 {
 	$md5sum = md5_file("/var/www/html/raspberry/code/$filename");

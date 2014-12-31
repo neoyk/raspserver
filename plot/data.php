@@ -22,8 +22,8 @@ $result = mysql_query($cmd, $link);
 while ($row = mysql_fetch_array($result))
 {
 	if($index==0) $first_timestamp = $row[1];
-	if($timestamp>$row[1]) continue;
-	while($timestamp+3600<$row[1]){
+	if($timestamp>$row[1] and $index and $row[1]-$last_timestamp<1800) continue;
+	while($timestamp+5400<$row[1]){
 		$missing[$index] = 1;
 		$index += 1;
 		$timestamp += 3600;
@@ -32,6 +32,8 @@ while ($row = mysql_fetch_array($result))
     $last_timestamp = $row[1];
 	$index += 1;
 	$timestamp += 3600;
+	if($callpage=='rawfigs.php' and !isset($asn))
+		$asn = $row[2];
 }
 $len = count($data);
 date_default_timezone_set('Asia/Chongqing');
@@ -39,33 +41,39 @@ $date = date_create();
 date_timestamp_set($date, $last_timestamp);
 $time = date_format($date, 'Ymd-His');
 if($len>0){
-	if($callpage!='overfigs.php') {
+	if(strpos($callpage,'overfig')!==False) {
+		if($unify==0){
+			$min = 0;
+			$cmd = "select max($entry) from $table where mac='$mac' and time>= now()- interval ";
+			if($callpage=='overfigs.php')
+				$cmd.="48 hour";
+			else
+				$cmd.="30 day";
+			$result = mysql_query($cmd, $link);
+			$row = mysql_fetch_array($result);
+			$max = $row[0];
+		}
+		elseif($unify==1){
+			$min = 0;
+			switch($entry){
+				case 'avgbw':
+					$max=5*pow(10,7);
+					break;
+				case 'avgrtt':
+					$max=250;
+					break;
+				case 'avgloss':
+					$max=10;
+					break;
+			}
+		}
+	}
+	if(strpos($callpage,'overfig')===False or $unify==2) {
 		$max = big_ceil(max($data));
 		if((max($data)-min($data))/max($data)<0.01)
 			$min = 2*$data[0]-$max;
 		else
 			$min = big_floor(min($data));
-	}
-	elseif($unify==0){
-		$min = 0;
-		$cmd = "select max($entry) from $table where mac='$mac' and time>= now()- interval 48 hour";
-		$result = mysql_query($cmd, $link);
-		$row = mysql_fetch_array($result);
-		$max = $row[0];
-	}
-	else{
-		$min = 0;
-		switch($entry){
-			case 'avgbw':
-				$max=5*pow(10,7);
-				break;
-			case 'avgrtt':
-				$max=250;
-				break;
-			case 'avgloss':
-				$max=10;
-				break;
-		}
 	}
 	list($max,$scale,$unit) = scale_unit($max);
 	$min /= $scale;

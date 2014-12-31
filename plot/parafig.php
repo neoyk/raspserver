@@ -19,6 +19,10 @@ if(isset($_GET['version']))
 	$version = $_GET['version']; 
 else
 	$version = 4;
+if(isset($_GET['unify']))
+	$unify = intval($_GET['unify']); 
+else
+	$unify = 0;
 if($version == null or ($version!=4 and $version!=6))  $version = 4;
 if(isset($_GET['table']))
 	$table=$_GET['table'];

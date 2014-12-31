@@ -4,6 +4,9 @@
 <head>
 <meta http-equiv = "Content-Type" content = "text-html; charset = utf-8" />
 <META HTTP-EQUIV="REFRESH" CONTENT="3600">
+<link rel="shortcut icon" href="/raspberry/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/raspberry/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="/raspberry/style.css" />
 <title>Plot Overall Performance</title>
 <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.1.min.js"></script>
 <script>
@@ -21,16 +24,16 @@ $(document).ready(function(){
 	
 	require('paraparser.php');
 	include('../function.php');
-	$macfull = mac_full($mac);
-	echo "<h3>$code, $macfull, $in3, IPv$version ";
+	echo "<p><a href=/raspberry/index.php><img src=/raspberry/img/sasm-logo.jpg height=30></a>&nbsp;
+	<span class=big>$code, $macfull, $in3, IPv$version";
 	foreach($para as $entry)echo ", $entry";
 	$map = array('avgbw'=>'bandwidth','avgrtt'=>'latency','avgloss'=>'lossrate');
 $where = urlencode("type='$in3'");
-echo "&nbsp;&nbsp;<a href=\"full.php?version=$version&mac=$mac&code=$code&xaxis=Two_days&ok=Plot&where=$where";
+echo ",&nbsp;<a href=\"full.php?version=$version&mac=$macfull&code=$code&xaxis=Two_days&ok=Plot&where=$where";
 foreach($para as $entry)
 { $name = $map[$entry];echo "&$name=1";}
 echo "\">Individual websites in $in3</a>\n";
-	echo "</h3>\n";
+	echo "</span></p><hr>\n";
 	
 	if($correct==0)
 		echo "<font color=red>Wrong Data! Please check your input!</font> <br />";
@@ -42,7 +45,9 @@ echo "\">Individual websites in $in3</a>\n";
 	}
 echo "<br><br><button>Click to replot results.</button>\n";
 require("form.php");
+echo "<br>";
+require("../tail.php");
 ?>
 <br />
-<div align="center"><p id=b>&copy;1998-<script>clientdate=new Date();document.write(clientdate.getUTCFullYear());</script> <a href="http://www.nic.edu.cn/" target="_blank">CERNIC</a>, <a href="http://www.edu.cn/cernet_fu_wu_1325/index.shtml" target="_blank">CERNET</a>. All rights reserved. China Education and Research Network</p></div>
 </body>
+</html>

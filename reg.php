@@ -11,12 +11,12 @@ require("function.php");
 $link = mysql_connect("localhost","root", "") or die('Connection Failure!'); 
 $db = mysql_select_db("raspberry");  
 $code = mysql_escape_string($_GET['code']);
-$mac = strtolower(mysql_escape_string($_GET['mac']));
-$macfull = mac_full($mac);
+$macfull = strtolower(mysql_escape_string($_GET['mac']));
+$mac = mac_short($macfull);
 echo "
-MAC地址：$macfull<br /><input name = \"mac\" size=20 type = \"hidden\" value=\"$mac\"/ readonly>
+MAC地址：$macfull<br /><input name = \"mac\" size=20 type = \"hidden\" value=\"$macfull\"/ readonly>
 名字：<input name = \"code\" size=20 type = \"text\" value=\"$code\"/><br />
-<br /><input name = \"action\" type = \"submit\" value = \"提交\" /> <a href=index.php>Return</a>
+<br /><input name = \"action\" type = \"submit\" value = \"提交\" /> 
 </form>
 ";
 if(strlen($mac) and strlen($code))
@@ -32,6 +32,7 @@ if(strlen($mac) and strlen($code))
 				echo "注册成功！<br>\n";
 			else
 				echo "注册失败！<br>\n";
+			mysql_query("insert into name_history (mac, name, time) values ('$mac', '$code',now())", $link);
 		}
 		else
 			echo "代号不能少于6个字符，请重新输入！<br>\n";
@@ -53,5 +54,6 @@ else
 	echo "无";
 ?>
 </table>
+<br><a href=index.php>Return</a>
 </body>
 </html>

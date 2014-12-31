@@ -4,7 +4,10 @@
 <head>
 <meta http-equiv = "Content-Type" content = "text-html; charset = utf-8" />
 <META HTTP-EQUIV="REFRESH" CONTENT="3600">
-<title>Plot Multiple Web</title>
+<title>Plot Raw data</title>
+<link rel="shortcut icon" href="/raspberry/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/raspberry/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="/raspberry/style.css" />
 
 <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.1.min.js"></script>
 <script>
@@ -21,8 +24,8 @@ $(document).ready(function(){
 <?php
 require('paraparser.php');
 include('../function.php');
-$macfull = mac_full($mac);
-echo "<h2>Plot raw data: $code, $macfull, IPv$version, $where</h2>\n";
+echo "<p><a href=/raspberry/index.php><img src=/raspberry/img/sasm-logo.jpg height=30></a>&nbsp;
+<span class=big>$code, $macfull, IPv$version, $where, Plot raw data</span></p><hr>\n";
 if(!empty($ok))
 {
 	if($in=="--OR--" and $correct==0)
@@ -50,7 +53,8 @@ if(!empty($ok))
 }
 echo "<br><br><button>Click to replot results.</button>\n";
 require('form.php');
+require('../tail.php');
 
 ?>
-<div align="center"><p id=b>&copy;1998-<script>clientdate=new Date();document.write(clientdate.getUTCFullYear());</script> <a href="http://www.nic.edu.cn/" target="_blank">CERNIC</a>, <a href="http://www.edu.cn/cernet_fu_wu_1325/index.shtml" target="_blank">CERNET</a>. All rights reserved. China Education and Research Network</p></div>
 </body>
+</html>

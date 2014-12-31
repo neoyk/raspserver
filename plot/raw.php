@@ -6,6 +6,9 @@
 <META HTTP-EQUIV="REFRESH" CONTENT="3600">
 <title>Plot Single Web</title>
 
+<link rel="shortcut icon" href="/raspberry/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/raspberry/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="/raspberry/style.css" />
 <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.1.min.js"></script>
 <script>
 $(document).ready(function(){
@@ -34,7 +37,8 @@ if($row0[0]==0)
 }else
 	$id=$id0;
 
-echo "<h2>Plot raw data: $code, $mac, IPv$version, $in3<h2>\n";
+echo "<p><a href=/raspberry/index.php><img src=/raspberry/img/sasm-logo.jpg height=30></a>&nbsp;
+<span class=big>$code, $macfull, IPv$version, $in3, Plot raw data<span></p><hr>\n";
 $result2 = mysql_query("select upper(asn),ip from perf_{$mac}_v$version where id=$id order by time desc limit 1", $link);
 $row2 = mysql_fetch_array($result2);
 $asn = $row2[0];
@@ -49,9 +53,12 @@ if($in=="--OR--" and $correct==0)
 	echo "<font color=red>Wrong Data! Please check your input!</font> <br />";
 else
 	require('plot.php');
-echo "<br><br><button>Click to replot results.</button>\n";
-require("form.php");
+//TODO fix the bug in form
+//echo "<br><br><button>Click to replot results.</button>\n";
+//require("form.php");
+echo "<hr\n>";
+require('../tail.php');
 ?>
 <br />
-<div align="center"><p id=b>&copy;1998-<script>clientdate=new Date();document.write(clientdate.getUTCFullYear());</script> <a href="http://www.nic.edu.cn/" target="_blank">CERNIC</a>, <a href="http://www.edu.cn/cernet_fu_wu_1325/index.shtml" target="_blank">CERNET</a>. All rights reserved. China Education and Research Network</p></div>
 </body>
+</html>

@@ -8,7 +8,8 @@
 <body>
 <?php
 require("function.php");
-$mac =  $_REQUEST['mac'];
+$macfull =  $_REQUEST['mac'];
+$mac = mac_short($macfull);
 /*echo $code."\n";
 echo $version."\n";
  */

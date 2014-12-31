@@ -1,7 +1,7 @@
 <?php
 require("../function.php");
 require("parafig.php");
-$img_height = 200;  //画布高度
+$img_height = 190;  //画布高度
 $img_width = 1000;  //画布宽度
 $jiange = 0;  //刻度之间的间隔
 $left = 70;  //左侧留下的宽度
@@ -11,7 +11,8 @@ $down = 60;  //下面留下的宽度
 $max = 1;  //最大数据值
 $iny=$_GET['yaxis'];
 $type=$_GET['type'];
-$mac = $_GET['mac'];
+$macfull = $_GET['mac'];
+$mac = str_replace(':','',$macfull);
 $in4=$_GET['min'];
 $in5=$_GET['max'];
 $in6=$_GET['xzoom'];

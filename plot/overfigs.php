@@ -14,10 +14,6 @@ if(isset($_GET['entry']))
 	$entry=strtolower($_GET['entry']);
 else
 	$entry='avgbw';
-if(isset($_GET['unify']))
-	$unify=intval($_GET['unify']);
-else
-	$unify=0;
 
 $xmark = 2 ;
 $ymark = 2 ;

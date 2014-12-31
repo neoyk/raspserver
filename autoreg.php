@@ -13,11 +13,11 @@ else
 {
 	echo '1';
 	//echo "/usr/bin/ssh -i /var/www/html/raspberry/vpnkey root@121.194.167.60 '/etc/openvpn/client/script/perf_openvpn $mac'";
-	$out = shell_exec("/usr/bin/ssh -o StrictHostKeyChecking=no -i /var/www/html/raspberry/vpnkey root@121.194.167.60 '/etc/openvpn/client/script/perf_openvpn $mac' 2>&1");
+	$out = shell_exec("/usr/bin/ssh -o StrictHostKeyChecking=no -i /var/www/html/raspberry/vpnkey root@121.194.167.60 '/usr/bin/python2.6 /etc/openvpn/client/script/perf_openvpn $mac' 2>&1");
 	//$out = shell_exec("whoami");
 	//print_r($out);
 	//echo "insert into siteinfo values(null,'$code','$mac','$desc')";
-	if( mysql_query("insert ignore into siteinfo ( mac, latest ) values('$mac' ,'$timestr')", $link))
+	if( mysql_query("insert ignore into siteinfo (code, mac, latest ) values('','$mac' ,'$timestr')", $link))
 	{
 		echo mysql_affected_rows($link);
 		$create4 = mysql_query("create table if not exists raspresults.perf_".$mac."_v4 (id int not null, ip varchar(16) not null, asn varchar(20), webdomain varchar(500) not null,time datetime not null, bandwidth double not null, pagesize double not null, latency float not null, lossrate float not null, actual_loss float not null, maxbw double not null, type varchar(50), UNIQUE KEY idx_time (id,time)) ENGINE=MyISAM DEFAULT CHARSET=utf8",$link);

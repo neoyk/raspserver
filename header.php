@@ -26,30 +26,52 @@ else
 $category = array('bw','rtt','loss','all');
 if(!in_array($cat,$category) and $cat!='all')
 	$cat = $category[0];
-$CAT = strtoupper($cat);
-echo "<p><a href=websites.php><img src=img/sasm-logo.jpg height=30></a>\n";
-echo "probes - ";
-if($alive)
-	echo " <b>alive only</b>, <a href=$callpage?version=$version&cat=$cat&alive=0>all probes</a>";
-else
-	echo " <a href=$callpage?version=$version&cat=$cat&alive=1>alive only</a>, <b>all probe</b>";
-echo " | ";
-if($callpage=='index.php')
-	echo " <b>list</b>, <a href=plot.php?version=$version&cat=$cat&alive=$alive>Plot</a>, <a href=plot.php?version=$version&cat=$cat&alive=$alive&unify=1>Plot2</a>";
-elseif($unify==0)
-	echo " <a href=index.php?version=$version&cat=$cat&alive=$alive>list</a>, <b>Plot</b>, <a href=plot.php?version=$version&cat=$cat&alive=$alive&unify=1>Plot2</a>";
-else
-	echo " <a href=index.php?version=$version&cat=$cat&alive=$alive>list</a>, <a href=plot.php?version=$version&cat=$cat&alive=$alive>Plot</a>, <b>Plot2</b>";
-echo " | ";
-foreach($version_array as $v) {
-	foreach ($category as $c) {
-		if($cat==$c and $version == $v)
-			echo '<b>IPv'.$v.'-'.strtoupper($c).'</b>&nbsp;';
-		else
-			echo "<a href=$callpage?unify=$unify&version=$v&alive=$alive&cat=$c>IPv".$v.'-'.strtoupper($c).'</a>&nbsp;';
-	}
+if( isset($_REQUEST['quiet'])){
+	$quiet = intval($_REQUEST['quiet']);
+	$cat = 'all';
 }
-//echo "| mean value</p>\n";
+else{
+	$quiet = 0;
+}
+if( isset($_REQUEST['mac'])){
+	$m = $_REQUEST['mac']; //short 12 digits for index.php to search
+	$mac = $_REQUEST['mac']; //for month_plot.php
+}
+else{
+	$m = '';
+	$mac = '';
+}
+$CAT = strtoupper($cat);
+if (isset($_REQUEST['q']))
+	$q = mysql_escape_string($_REQUEST['q']);
+else
+	$q = '';
+if($quiet==0){
+	echo "<p><a href=websites.php><img src=img/sasm-logo.jpg height=30></a>\n";
+	echo "probes - ";
+	if($alive)
+		echo " <b>alive only</b>, <a href=$callpage?version=$version&cat=$cat&alive=0&q=$q>all probes</a>";
+	else
+		echo " <a href=$callpage?version=$version&cat=$cat&alive=1&q=$q>alive only</a>, <b>all probe</b>";
+	echo " | ";
+	if($callpage=='index.php')
+		echo " <b>list</b>, <a href=plot.php?version=$version&cat=$cat&alive=$alive&q=$q>Plot</a>, <a href=plot.php?version=$version&cat=$cat&alive=$alive&q=$q&unify=1>Plot2</a>";
+	elseif($unify==0)
+		echo " <a href=index.php?version=$version&cat=$cat&alive=$alive&q=$q>list</a>, <b>Plot</b>, <a href=plot.php?version=$version&cat=$cat&alive=$alive&q=$q&unify=1>Plot2</a>";
+	else
+		echo " <a href=index.php?version=$version&cat=$cat&alive=$alive&q=$q>list</a>, <a href=plot.php?version=$version&cat=$cat&alive=$alive&q=$q>Plot</a>, <b>Plot2</b>";
+	echo " | ";
+	foreach($version_array as $v) {
+		foreach ($category as $c) {
+			if($cat==$c and $version == $v)
+				echo '<b>IPv'.$v.'-'.strtoupper($c).'</b>&nbsp;';
+			else
+				echo "<a href=$callpage?unify=$unify&version=$v&alive=$alive&cat=$c&q=$q>IPv".$v.'-'.strtoupper($c).'</a>&nbsp;';
+		}
+	}
+	echo "</p><hr>\n";
+	//echo "| mean value</p>\n";
+}
 $con0 = mysqli_connect("localhost","root","","raspberry");
 $con = mysqli_connect("localhost","root","","raspresults");
 if (mysqli_connect_errno())
@@ -87,5 +109,4 @@ if(isset( $_REQUEST['desc']))
 	$desc = $_REQUEST['desc'];
 else
 	$desc = 'asc';
-echo "<hr>";
 ?>

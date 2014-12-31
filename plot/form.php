@@ -8,10 +8,11 @@ echo "<select name=mac>";
 $result3 = mysqli_query($con, "select mac from raspberry.siteinfo where id>2");
 while($row3 = mysqli_fetch_row($result3))
 {   
+	$macfull = mac_full($row3[0]);
 	if($mac==$row3[0])
-		echo "<option selected=selected>$row3[0]</option>";
+		echo "<option selected=selected>$macfull</option>";
 	else	
-		echo "<option>$row3[0]</option>";
+		echo "<option>$macfull</option>";
 }   
 echo "</select></p>";
 mysqli_close($con);

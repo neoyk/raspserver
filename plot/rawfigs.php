@@ -33,7 +33,6 @@ $cmd = "select $entry, unix_timestamp(time), asn from $table where id=$id ";
 require("data.php");
 require("image.php");
 require("points.php");
-
 //for ($i = 0; $i < $cou; $i ++)
 //    imagestring($image, 3, $p_x[$i]+2, $p_y[$i]-12,$data[$i],$black);
 imagestring($image, 4, $left, 0,"$asn id:$id",$black);

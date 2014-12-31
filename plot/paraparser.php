@@ -3,9 +3,10 @@ $callpage = basename($_SERVER['SCRIPT_FILENAME']);
 error_reporting(E_WARNING);
 
 if($_GET['mac'])
-	$mac = $_GET['mac'];
+	$macfull = $_GET['mac'];
 else
-	$mac = '000000000000';
+	$macfull = '00:00:00:00:00:00';
+$mac = str_replace(":",'',$macfull);
 if($_GET['perf'])
 	$perf = $_GET['perf'];
 else
@@ -61,7 +62,9 @@ $in=$_GET['xaxis'];	if(strlen($in)==0)	$in="Month";
 
 $in2=$_GET['yaxis'];	if(strlen($in2)==0)	$in2="Auto";
 
-$in3=$_GET['type'];	if(strlen($in3)==0)	$in3="Domestic Academic";
+$in3=$_GET['type'];	
+if(strlen($in3)==0)	$in3="Domestic Academic";
+if($version==6 and $in3=='CERNET')	$in3="Domestic Academic";
 $limit=$_GET['limit'];	$limit=intval($limit);	if($limit<=0)	$limit=1;
 
 $in4=$_GET['min'];	$in4=intval($in4);	if(strlen($in4)==0)	$in4=0;
