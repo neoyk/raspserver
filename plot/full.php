@@ -32,7 +32,7 @@ if(!empty($ok))
 		echo "<font color=red>Wrong Data! Please check your input!</font> <br />";
 	else
 	{	
-		$link = mysql_connect("127.0.0.1", "root", "") or die('Connecting Failure!');
+		$link = mysql_connect("127.0.0.1", "root", "giat@204") or die('Connecting Failure!');
 		mysql_select_db("raspberry",$link);
 		mysql_query("flush tables", $link);
 		$basedir = dirname(__FILE__);

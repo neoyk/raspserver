@@ -12,7 +12,11 @@ else if($color=="yellow")
 	$line_color = imagecolorallocate($image,0xFF,0xFF,0x80);
 else if($color=="black")
 	$line_color = imagecolorallocate($image,0x00,0x00,0x00);
-else
+else if($entry=='latency' or $entry == 'avgrtt')
+	$line_color = imagecolorallocate($image,0x08,0x8A,0x08);
+else if($entry=='lossrate' or $entry == 'avgloss')
+	$line_color = imagecolorallocate($image,0xB4,0x04,0x04);
+else 
 	$line_color = imagecolorallocate($image,0x00,0x00,0xFF);
 
 imageline($image, $left, $img_height-$down, $img_width-$right, $img_height-$down, $black);  //画横刻度

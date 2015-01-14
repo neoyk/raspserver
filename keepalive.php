@@ -20,7 +20,7 @@ else
 echo $version."\n";
 echo $data."\n";
  */
-$con = mysqli_connect("localhost","root","","raspberry");
+$con = mysqli_connect("localhost","root","giat@204","raspberry");
 if (mysqli_connect_errno())
 {
   echo "Failed to connect to MySQL: " . mysqli_connect_error();

@@ -206,8 +206,10 @@ while($row0 = mysqli_fetch_assoc($result0))
 	else{
 		$address = $row0["ipv6"];
 		$asn = $row0["asn6"];
-		//$asn = intval(substr($asn,2));
-		
+		//$sql = "select ipv$version, asn$version from perf_{$mac}_address order by time desc limit 1";
+		//$result = mysqli_query($con,$sql);
+		//$addr = mysqli_fetch_assoc($result);
+		//$asn = intval(substr($addr["asn6"],2));
 		//echo "update raspberry.siteinfo set ipv6='$address',asn6=$asn where mac='$mac'"; 
 		//mysqli_query($con0, "update raspberry.siteinfo set ipv6='$address',asn6=$asn where mac='$mac'");  
 	}

@@ -32,7 +32,7 @@ if(isset($_GET['table']))
 	$table=$_GET['table'];
 else
 	$table = $code.$version;
-$link = mysql_connect("127.0.0.1", "root", "") or die('Connecting Failure!'); 
+$link = mysql_connect("127.0.0.1", "root", "giat@204") or die('Connecting Failure!'); 
 $db = mysql_select_db('raspresults'); 
 
 $result0 = mysql_query("select max(time) from $table where id=$id", $link);

@@ -23,7 +23,7 @@ $(document).ready(function(){
 
 <?php
 require('paraparser.php');
-$link = mysql_connect("127.0.0.1", "root", "") or die('Connecting Failure!');
+$link = mysql_connect("127.0.0.1", "root", "giat@204") or die('Connecting Failure!');
 mysql_select_db("raspresults",$link);
 
 $id0 = $_REQUEST['id'];

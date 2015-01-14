@@ -1,7 +1,7 @@
 <?php
 $k = 2;
 $id = $_GET['id']; if($id == null) $id = 8;
-$link = mysql_connect("127.0.0.1", "root", "") or die('Connecting Failure!');
+$link = mysql_connect("127.0.0.1", "root", "giat@204") or die('Connecting Failure!');
 $db = mysql_select_db("mnt");
 mysql_query("set names utf8", $link);
 $cmd = "select latency from web_perf where id = $id and time > '20130820' ";

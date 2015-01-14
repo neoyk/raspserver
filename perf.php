@@ -16,7 +16,7 @@ if(!in_array($version, array(4,6)))
 	$version = 4;
 echo "<p>Performance - IPv$version $perf ($unit[$perf]) </p>\n";
 #TODO sort
-$link = mysql_connect("localhost","root", "") or die('Connection Failure!'); 
+$link = mysql_connect("localhost","root", "giat@204") or die('Connection Failure!'); 
 $db = mysql_select_db("raspberry");  
 if($version==4)
 echo "<table><tr><td>Name&nbsp;</td><td>Dom Ac&nbsp;</td><td>Dom Biz&nbsp;</td><td>China Telecom&nbsp;</td><td>China Unicom&nbsp;</td><td>China Mobile&nbsp;</td><td>Int' Ac&nbsp;</td><td>Int' Biz&nbsp;</td><td>overall</td><td>&nbsp;</td></tr>\n";
@@ -24,7 +24,7 @@ else
 echo "<table><tr><td>Name&nbsp;</td><td>Dom Ac&nbsp;</td><td>Dom Biz&nbsp;</td><td>Int' Ac&nbsp;</td><td>Int' Biz&nbsp;</td><td>overall</td><td>&nbsp;</td></tr>\n";
 $sql = "select code, mac from siteinfo where id >2 order by id ";
 $result = mysql_query($sql, $link);  
-$con = mysqli_connect("localhost","root","","raspresults");
+$con = mysqli_connect("localhost","root","giat@204","raspresults");
 if (mysqli_connect_errno())
 {
   echo "Failed to connect to MySQL: " . mysqli_connect_error();

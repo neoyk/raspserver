@@ -5,7 +5,7 @@
 </head>
 <body>
 <?php
-$link = mysql_connect("localhost","root", "") or die('Connection Failure!'); 
+$link = mysql_connect("localhost","root", "giat@204") or die('Connection Failure!'); 
 $db = mysql_select_db("raspberry");  
 foreach(array(4,6) as $version)
 {

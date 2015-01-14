@@ -9,7 +9,7 @@ $asn6 =  $_POST['asn6'];
 /*echo $code."\n";
 echo $version."\n";
  */
-$link = mysql_connect("localhost","root", "") or die('Connection Failure!'); 
+$link = mysql_connect("localhost","root", "giat@204") or die('Connection Failure!'); 
 $db = mysql_select_db("raspresults");
 preg_match("/CE:(\d+\.\d+\.\d+\.\d+)/",$ipv4,$matches);
 $v4addr = $matches[1];

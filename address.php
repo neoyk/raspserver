@@ -1,5 +1,8 @@
 <html>
 <head>
+<title>Probe Address history</title>
+<link rel="shortcut icon" href="/raspberry/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/raspberry/favicon.ico" type="image/x-icon">
 <style>
 	table, th, td {border: 1px solid black; border-collapse: collapse;}
 	th,td { padding: 5px}
@@ -21,7 +24,7 @@ function echoaddr($row)
 	$time = timeformat($row[6]);
     echo "<tr><td>$macfull</td><td>$ipv4</td><td>$asn4</td><td>$row[4]</td><td>$row[5]</td><td>$time</td><tr>";
 }
-$link = mysql_connect("localhost","root", "") or die('Connection Failure!'); 
+$link = mysql_connect("localhost","root", "giat@204") or die('Connection Failure!'); 
 $db = mysql_select_db("raspresults");
 $macfull = mac_full($mac);
 echo "<p>Current Address of $macfull</p>\n<table ><tr><td>MAC</td><td>IPv4</td><td>ASN4</td><td>IPv6</td><td>ASN6</td><td>Time</td></tr>\n";

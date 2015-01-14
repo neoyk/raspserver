@@ -11,7 +11,7 @@
 <p><a href=index.php><img src=img/sasm-logo.jpg height=30></a>&nbsp;
 <?php
 require("function.php");
-$con = mysqli_connect("localhost","root","","raspberry");
+$con = mysqli_connect("localhost","root","giat@204","raspberry");
 if (mysqli_connect_errno())
 {
   echo "Failed to connect to MySQL: " . mysqli_connect_error();

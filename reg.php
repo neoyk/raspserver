@@ -8,7 +8,7 @@
 <form name = "query" action = "reg.php" method = "get">
 <?php
 require("function.php");
-$link = mysql_connect("localhost","root", "") or die('Connection Failure!'); 
+$link = mysql_connect("localhost","root", "giat@204") or die('Connection Failure!'); 
 $db = mysql_select_db("raspberry");  
 $code = mysql_escape_string($_GET['code']);
 $macfull = strtolower(mysql_escape_string($_GET['mac']));

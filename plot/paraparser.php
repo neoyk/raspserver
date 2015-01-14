@@ -11,7 +11,7 @@ if($_GET['perf'])
 	$perf = $_GET['perf'];
 else
 	$perf = 'avgbw';
-$con = mysqli_connect("localhost","root","","raspresults");
+$con = mysqli_connect("localhost","root","giat@204","raspresults");
 if (mysqli_connect_errno())
 {
 	  echo "Failed to connect to MySQL: " . mysqli_connect_error();

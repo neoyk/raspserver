@@ -8,7 +8,7 @@ date_default_timezone_set('Asia/Chongqing');
 echo $version."\n";
 echo $data."\n";
  */
-$link = mysql_connect("localhost","root", "") or die('Connection Failure!'); 
+$link = mysql_connect("localhost","root", "giat@204") or die('Connection Failure!'); 
 $db = mysql_select_db("raspresults");
 $entries = explode('||||',$data);
 $count = 0;

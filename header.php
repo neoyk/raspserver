@@ -72,8 +72,8 @@ if($quiet==0){
 	echo "</p><hr>\n";
 	//echo "| mean value</p>\n";
 }
-$con0 = mysqli_connect("localhost","root","","raspberry");
-$con = mysqli_connect("localhost","root","","raspresults");
+$con0 = mysqli_connect("localhost","root","giat@204","raspberry");
+$con = mysqli_connect("localhost","root","giat@204","raspresults");
 if (mysqli_connect_errno())
 {
   echo "Failed to connect to MySQL: " . mysqli_connect_error();

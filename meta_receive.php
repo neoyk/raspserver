@@ -4,7 +4,7 @@ $data =  $_POST['data'];
 echo $version."\n";
 echo $data."\n";
  */
-$link = mysql_connect("localhost","root", "") or die('Connection Failure!'); 
+$link = mysql_connect("localhost","root", "giat@204") or die('Connection Failure!'); 
 $db = mysql_select_db("raspberry");
 $entries = explode('||||',$data);
 $count = 0;

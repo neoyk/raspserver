@@ -13,7 +13,7 @@
 <?php
 	$code = mysql_escape_string($_GET['code']);
 	$desc = mysql_escape_string($_GET['desc']);
-    $link = mysql_connect("localhost","root", "") or die('Connection Failure!'); 
+    $link = mysql_connect("localhost","root", "giat@204") or die('Connection Failure!'); 
     $db = mysql_select_db("raspberry");  
     mysql_query("set names utf8", $link);
 	if(mysql_query("insert into siteinfo values(null,'".$code."','".$desc."')", $link))

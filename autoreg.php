@@ -2,7 +2,7 @@
 date_default_timezone_set('Asia/Chongqing');
 $timestamp = time();
 $timestr = date('Y:m:d H:i:s',$timestamp);
-$link = mysql_connect("localhost","root", "") or die('Connection Failure!'); 
+$link = mysql_connect("localhost","root", "giat@204") or die('Connection Failure!'); 
 $db = mysql_select_db("raspberry");  
 $mac = mysql_escape_string($_REQUEST['mac']);
 if(!preg_match("/[0-9a-f]{12}/i",$mac))
