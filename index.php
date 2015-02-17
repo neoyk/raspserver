@@ -83,13 +83,13 @@ if($quiet){
 	}
 }
 else{
-	echo "<a href=index.php?version=$version&cat=$cat&alive=$alive&q=$q&order=name&desc=";
+	echo "<a href=index.php?version=$version&cat=$cat&alive=$alive&mac=$m&token=$token&q=$q&order=name&desc=";
 	echo ($order=='name' and $desc=='desc')?"asc":"desc";
 	echo ">Name</a>".str_repeat(' ',12);
-	echo "<a href=index.php?version=$version&cat=$cat&alive=$alive&q=$q&order=mac&desc=";
+	echo "<a href=index.php?version=$version&cat=$cat&alive=$alive&mac=$m&token=$token&q=$q&order=mac&desc=";
 	echo ($order=='mac' and $desc=='desc')?"asc":"desc";
 	echo ">MAC address</a>".str_repeat(' ',7);
-	echo "<a href=index.php?version=$version&cat=$cat&alive=$alive&q=$q&order=ip&desc=";
+	echo "<a href=index.php?version=$version&cat=$cat&alive=$alive&mac=$m&token=$token&q=$q&order=ip&desc=";
 	echo ($order=='ip' and $desc=='desc')?"asc":"desc";
 	echo ">Public IP</a>";
 	if($version == 4 )
@@ -98,10 +98,10 @@ else{
 		echo sprintf("%-30s", '');
 	if($version == 4 )
 		echo sprintf("%-16s", ' Local IP');
-	echo " <a href=index.php?version=$version&cat=$cat&alive=$alive&q=$q&order=asn&desc=";
+	echo " <a href=index.php?version=$version&cat=$cat&alive=$alive&mac=$m&token=$token&q=$q&order=asn&desc=";
 	echo ($order=='asn' and $desc=='desc')?"asc":"desc";
 	echo ">ASN</a>     ";
-	echo "<a href=index.php?version=$version&cat=$cat&alive=$alive&q=$q&order=time&desc=";
+	echo "<a href=index.php?version=$version&cat=$cat&alive=$alive&mac=$m&token=$token&q=$q&order=time&desc=";
 	echo ($order=='time' and $desc=='desc')?"asc":"desc";
 	echo ">Datetime</a>".str_repeat(' ',8);
 	foreach($category as $genre) {
@@ -110,7 +110,7 @@ else{
 		foreach($types as $type) {
 			$column = strtoupper($genre).'-'.$maps[$type];
 			$urltype = urlencode($genre.'-'.$type);
-			echo str_repeat(' ',11-strlen($column))."<a href=index.php?version=$version&cat=$cat&alive=$alive&q=$q&order=$urltype&desc=";
+			echo str_repeat(' ',11-strlen($column))."<a href=index.php?version=$version&cat=$cat&alive=$alive&mac=$m&token=$token&q=$q&order=$urltype&desc=";
 			echo (isset($_REQUEST['order']) and $_REQUEST['order']==$genre.'-'.$type and $desc=='desc')?"asc":"desc";
 			echo ">$column</a>";
 		}

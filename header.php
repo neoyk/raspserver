@@ -34,12 +34,21 @@ else{
 	$quiet = 0;
 }
 if( isset($_REQUEST['mac'])){
-	$m = $_REQUEST['mac']; //short 12 digits for index.php to search
-	$mac = $_REQUEST['mac']; //for month_plot.php
+	$m = mac_short($_REQUEST['mac']); //short 12 digits for index.php to search
+	$mac = mac_short($_REQUEST['mac']); //for month_plot.php
 }
 else{
 	$m = '';
 	$mac = '';
+}
+if( isset($_REQUEST['token']))
+	$token = strval($_REQUEST['token']);
+else
+	$token = '';
+if(strlen($m)<12 and $token!='perf2015')
+{
+	echo "<h1>Authorization Required</h1>\n";
+	exit(1);
 }
 $CAT = strtoupper($cat);
 if (isset($_REQUEST['q']))
@@ -50,23 +59,23 @@ if($quiet==0){
 	echo "<p><a href=websites.php><img src=img/sasm-logo.jpg height=30></a>\n";
 	echo "probes - ";
 	if($alive)
-		echo " <b>alive only</b>, <a href=$callpage?version=$version&cat=$cat&alive=0&q=$q>all probes</a>";
+		echo " <b>alive only</b>, <a href=$callpage?version=$version&cat=$cat&alive=0&q=$q&token=$token>all probes</a>";
 	else
-		echo " <a href=$callpage?version=$version&cat=$cat&alive=1&q=$q>alive only</a>, <b>all probe</b>";
+		echo " <a href=$callpage?version=$version&cat=$cat&alive=1&q=$q&mac=$m&token=$token>alive only</a>, <b>all probe</b>";
 	echo " | ";
 	if($callpage=='index.php')
-		echo " <b>list</b>, <a href=plot.php?version=$version&cat=$cat&alive=$alive&q=$q>Plot</a>, <a href=plot.php?version=$version&cat=$cat&alive=$alive&q=$q&unify=1>Plot2</a>";
+		echo " <b>list</b>, <a href=plot.php?version=$version&cat=$cat&alive=$alive&q=$q&mac=$m&token=$token>Plot</a>, <a href=plot.php?version=$version&cat=$cat&alive=$alive&q=$q&mac=$m&token=$token&unify=1>Plot2</a>";
 	elseif($unify==0)
-		echo " <a href=index.php?version=$version&cat=$cat&alive=$alive&q=$q>list</a>, <b>Plot</b>, <a href=plot.php?version=$version&cat=$cat&alive=$alive&q=$q&unify=1>Plot2</a>";
+		echo " <a href=index.php?version=$version&cat=$cat&alive=$alive&q=$q&mac=$m&token=$token>list</a>, <b>Plot</b>, <a href=plot.php?version=$version&cat=$cat&alive=$alive&q=$q&mac=$m&token=$token&unify=1>Plot2</a>";
 	else
-		echo " <a href=index.php?version=$version&cat=$cat&alive=$alive&q=$q>list</a>, <a href=plot.php?version=$version&cat=$cat&alive=$alive&q=$q>Plot</a>, <b>Plot2</b>";
+		echo " <a href=index.php?version=$version&cat=$cat&alive=$alive&q=$q&mac=$m&token=$token>list</a>, <a href=plot.php?version=$version&cat=$cat&alive=$alive&q=$q&mac=$m&token=$token>Plot</a>, <b>Plot2</b>";
 	echo " | ";
 	foreach($version_array as $v) {
 		foreach ($category as $c) {
 			if($cat==$c and $version == $v)
 				echo '<b>IPv'.$v.'-'.strtoupper($c).'</b>&nbsp;';
 			else
-				echo "<a href=$callpage?unify=$unify&version=$v&alive=$alive&cat=$c&q=$q>IPv".$v.'-'.strtoupper($c).'</a>&nbsp;';
+				echo "<a href=$callpage?unify=$unify&version=$v&alive=$alive&cat=$c&q=$q&mac=$m&token=$token>IPv".$v.'-'.strtoupper($c).'</a>&nbsp;';
 		}
 	}
 	echo "</p><hr>\n";

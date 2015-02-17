@@ -26,8 +26,12 @@ if(filter_var($clientip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) and $v4addr!=$cli
 if(filter_var($clientip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) and $ipv6!=$clientip) {
 	$ipv6 = $clientip;
 	$asn6 = 'AS'.getASN6($clientip);
+	$asno6 = intval(substr($asn6,2));
 }
-mysql_query("update raspberry.siteinfo set ipv4=INET_ATON('$v4addr'), ipv6='$ipv6', asn4=$asno4, asn6=$asno6 where mac='$mac'",$link);
+if(!filter_var($v4addr, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) 
+	mysql_query("update raspberry.siteinfo set ipv6='$ipv6', asn6=$asno6 where mac='$mac'",$link);
+else
+	mysql_query("update raspberry.siteinfo set ipv4=INET_ATON('$v4addr'), ipv6='$ipv6', asn4=$asno4, asn6=$asno6 where mac='$mac'",$link);
 if(mysql_affected_rows()==0){
 	file_get_contents("http://127.0.0.1/raspberry/autoreg.php?mac=$mac");
 	mysql_query("update raspberry.siteinfo set ipv4=INET_ATON('$v4addr'), ipv6='$ipv6', asn4=$asno4, asn6=$asno6 where mac='$mac'",$link);
